@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>hello-world</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>hello-world-core</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <key>value</key>
+        <foo>bar</foo>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>foo-bar</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>fizz-buzz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>foo</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.plugins</groupId>
+                <artifactId>foo-bar</artifactId>
+                <version>1.0.0</version>
+            </plugin>
+            <plugin>
+                <groupId>com.plugins</groupId>
+                <artifactId>fizz-buzz</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.plugins</groupId>
+                <artifactId>foo</artifactId>
+                <version>1.2.3</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

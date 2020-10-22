@@ -1,0 +1,8 @@
+I am a text file
+
+and I have some new lines.
+
+^ Here is a special character: $
+
+Perhaps I should include a double " and a single ' as well...
+

@@ -1,0 +1,49 @@
+
+config-locations:
+  - .sourcehawk-simple.yml
+  - .sourcehawk-simple2.yml
+
+file-protocols:
+#  These are duped and should be merged down on reading
+  - name: Lombok
+    repository-path: lombok.config
+    required: true
+    severity: WARNING
+    enforcers:
+      - enforcer: .common.StringPropertyEquals
+        property-name: config.stopBubbling
+        expected-property-value: false
+      - enforcer: .common.StringPropertyEquals
+        property-name: lombok.addLombokGeneratedAnnotation
+        expected-property-value: false
+      - enforcer: .common.StringPropertyEquals
+        property-name: lombok.addLombokGeneratedAnnotation2
+        expected-property-value: true
+  - name: Lombok
+    repository-path: lombok.config
+    required: true
+    severity: WARNING
+    enforcers:
+      - enforcer: .common.StringPropertyEquals
+        property-name: config.stopBubbling
+        expected-property-value: false
+      - enforcer: .common.StringPropertyEquals
+        property-name: lombok.addLombokGeneratedAnnotation
+        expected-property-value: false
+      - enforcer: .common.StringPropertyEquals
+        property-name: lombok.addLombokGeneratedAnnotation2
+        expected-property-value: true
+  - name: Lombok
+    repository-path: lombok.config
+    required: true
+    severity: WARNING
+    enforcers:
+      - enforcer: .common.StringPropertyEquals
+        property-name: config.stopBubbling
+        expected-property-value: false
+      - enforcer: .common.StringPropertyEquals
+        property-name: lombok.addLombokGeneratedAnnotation
+        expected-property-value: false
+      - enforcer: .common.StringPropertyEquals
+        property-name: lombok.addLombokGeneratedAnnotation2
+        expected-property-value: true

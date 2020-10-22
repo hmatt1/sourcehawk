@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.optum.sourcehawk</groupId>
+        <artifactId>sourcehawk-dist</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>sourcehawk-dist-debian</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <debian.build.directory>${project.build.directory}/debian</debian.build.directory>
+        <docker.debpkg.file>/tmp/${executable.name}.deb</docker.debpkg.file>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.optum.sourcehawk</groupId>
+            <artifactId>sourcehawk-dist-linux</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- FILTER RESOURCES TO INJECT MAVEN PROPERTIES INTO PLACEHOLDERS -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${debian.build.directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- COPY NATIVE IMAGE EXECUTABLE -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-native-image</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.optum.sourcehawk</groupId>
+                                    <artifactId>sourcehawk-dist-linux</artifactId>
+                                    <classifier>bin</classifier>
+                                    <type>zip</type>
+                                    <outputDirectory>${debian.build.directory}/usr/local/bin</outputDirectory>
+                                    <destFileName>${executable.name}</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- BUILD DOCKER IMAGE -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>build-and-tag-local</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <repository>${project.artifactId}-debian-builder</repository>
+                            <tag>${project.version}</tag>
+                            <buildArgs>
+                                <DEBIAN_DIRECTORY>target/debian</DEBIAN_DIRECTORY>
+                                <DEB_FILE>${docker.debpkg.file}</DEB_FILE>
+                            </buildArgs>
+                            <skipDockerInfo>true</skipDockerInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- EXEC PROCESSORS AND SCRIPTS -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+
+                    <!-- EXTRACT DEB PACKAGE FROM DOCKER CONTAINER TO TARGET DIRECTORY -->
+                    <execution>
+                        <id>extract-deb-package</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>../scripts/extract-file-from-docker-container.sh</executable>
+                            <arguments>
+                                <argument>${project.artifactId}-debian-builder:${project.version}</argument>
+                                <argument>${docker.debpkg.file}</argument>
+                                <argument>${project.build.directory}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+            <!-- ATTACH DEBIAN ARTIFACT-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-debian-artifact</id>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${project.build.directory}/${executable.name}.deb</file>
+                                    <type>deb</type>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

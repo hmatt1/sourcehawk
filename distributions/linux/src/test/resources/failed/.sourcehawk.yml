@@ -1,0 +1,11 @@
+
+api-version: 0.1
+
+file-protocols:
+  - name: File Properties
+    group: config
+    repository-path: file.properties
+    enforcers:
+      - enforcer: .common.StringPropertyEquals
+        property-name: abc
+        expected-property-value: 123

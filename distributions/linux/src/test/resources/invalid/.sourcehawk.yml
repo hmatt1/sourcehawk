@@ -1,0 +1,19 @@
+
+api-version: 0.1
+
+file-protocols:
+  - name: File Properties
+    description: File Properties configured correctly
+    group: config
+    tags:
+      - config
+    # Missing repository-path
+    required: true
+    severity: WARNING
+    enforcers:
+      - enforcer: .common.StringPropertyEquals
+        property-name: key
+        expected-property-value: value
+      - enforcer: .common.StringPropertyEquals
+        property-name: foo
+        expected-property-value: bar

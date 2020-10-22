@@ -1,0 +1,1 @@
+I am a file which will have my checksum calculated.  Please don't edit me unless you want tests to fail.

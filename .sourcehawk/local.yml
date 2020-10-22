@@ -1,0 +1,5 @@
+api-version: 1.0.0
+
+# For this example, even thought THIS file is under a child dir the paths will be relative to project root when run hence sourcehawk.yml and NOT ../sourcehawk.yml
+config-locations:
+  - sourcehawk.yml

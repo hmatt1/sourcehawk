@@ -1,0 +1,3 @@
+FROM hub.docker.com/image:latest
+
+ENV KEY VALUE

@@ -1,0 +1,16 @@
+api-version: 1.0.0
+
+file-protocols:
+  - name: Maven Parent
+    description: Maven Parent is correct
+    group: maven
+    tags:
+      - maven
+      - parent
+    repository-path: pom.xml
+    enforcers:
+      - enforcer: .maven.MavenParentEquals
+        expected-coordinates: com.optum.sourcehawk:sourcehawk-jar-parent
+
+config-locations:
+  - .test/.sourcehawk-bad-parent-example2.yml

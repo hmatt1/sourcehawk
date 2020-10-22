@@ -1,0 +1,15 @@
+
+make: Raleigh
+model: Professional
+type: road
+asdf:
+size:
+  value: 60
+  units: cm
+components:
+  - handlebars
+  - wheels
+  - pedals
+  - tires
+  - chain
+  - seat

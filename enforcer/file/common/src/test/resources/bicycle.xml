@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bicycles>
+    <bicycle id="1">
+        <make>Raleigh</make>
+        <model>Competition GS</model>
+        <type>Road</type>
+        <size>60cm</size>
+        <components>
+            <component group="cockpit">handlebars</component>
+            <component group="frameset">fork</component>
+            <component group="drivetrain">chain</component>
+        </components>
+    </bicycle>
+</bicycles>

@@ -1,0 +1,6 @@
+Package: ${executable.name}
+Version: ${project.version}
+Architecture: amd64
+Maintainer: Brian Wyka b@optum.com
+Description: ${global.project.name}
+ Watch over your source like a hawk!

@@ -1,0 +1,3 @@
+FROM hub.docker.com/image:1.0.0
+
+MAINTAINER email@domain.org

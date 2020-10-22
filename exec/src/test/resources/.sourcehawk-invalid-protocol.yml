@@ -1,0 +1,11 @@
+
+file-protocols:
+  - name: Lombok Config
+    description: Lombok Configured appropriately
+    group: lombok
+    tags:
+      - lombok
+      - config
+    repository-paths: lombok.config # Extra "s" at the end
+    required: true
+    severity: WARNING

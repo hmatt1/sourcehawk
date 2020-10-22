@@ -1,0 +1,59 @@
+package com.optum.sourcehawk.exec;
+
+import com.optum.sourcehawk.core.scan.ScanResult;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import picocli.CommandLine;
+
+/**
+ * CLI entry point for executing Sourcehawk scan command
+ *
+ * @author Brian Wyka
+ */
+@Slf4j
+@CommandLine.Command(
+        name = ScanCommand.COMMAND_NAME,
+        aliases = { "flyover", "survey" },
+        description = "Runs a scan on the source code"
+)
+class ScanCommand extends AbstractCommand {
+
+    static final String COMMAND_NAME = "scan";
+
+    /**
+     * Bootstrap the command
+     *
+     * @param args the command line args
+     */
+    public static void main(final String... args) {
+        val command = new ScanCommand();
+        val status = new CommandLine(command)
+                .setCaseInsensitiveEnumValuesAllowed(true)
+                .setTrimQuotes(true)
+                .execute(args);
+        Runtime.getRuntime()
+                .halt(status);
+    }
+
+    /**
+     * Execute the scan
+     *
+     * @return the exit code
+     */
+    @Override
+    public Integer call() {
+        ScanResult scanResult;
+        val execOptions = buildExecOptions();
+        try {
+            scanResult = ScanExecutor.scan(execOptions);
+        } catch (final Exception e) {
+            scanResult = ScanResultFactory.error(execOptions.getRepositoryRoot().toString(), e.getMessage());
+        }
+        ScanResultLogger.log(scanResult, execOptions);
+        if (scanResult.isPassed()) {
+            return CommandLine.ExitCode.OK;
+        }
+        return CommandLine.ExitCode.SOFTWARE;
+    }
+
+}

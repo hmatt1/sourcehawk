@@ -1,0 +1,43 @@
+file-protocols:
+  - name: Gitignore Config
+    description: Gitignore Configured appropriately
+    group: markdown
+    tags:
+      - simple
+      - config
+    repository-path: .gitignore
+    required: true
+    severity: WARNING
+  - name: Lombok Different
+    repository-path: lombok.config
+    required: true
+    severity: ERROR
+    enforcers:
+      - enforcer: .common.StringPropertyEquals
+        property-name: config.stopBubbling
+        expected-property-value: false
+      - enforcer: .common.StringPropertyEquals
+        property-name: lombok.addLombokGeneratedAnnotation
+        expected-property-value: true
+  - name: Lombok Different
+    repository-path: lombok.config
+    required: true
+    severity: ERROR
+    enforcers:
+      - enforcer: .common.StringPropertyEquals
+        property-name: config.stopBubbling
+        expected-property-value: false
+      - enforcer: .common.StringPropertyEquals
+        property-name: lombok.addLombokGeneratedAnnotation
+        expected-property-value: true
+  - name: Lombok Different
+    repository-path: lombok.config
+    required: true
+    severity: ERROR
+    enforcers:
+      - enforcer: .common.StringPropertyEquals
+        property-name: config.stopBubbling
+        expected-property-value: false
+      - enforcer: .common.StringPropertyEquals
+        property-name: lombok.addLombokGeneratedAnnotation
+        expected-property-value: true

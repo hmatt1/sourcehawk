@@ -1,31 +1,23 @@
-# Welcome to your new OSS project
+Sourcehawk
+----------
 
-This project currently has the base documentation files required.  Replace this
-file with your own README.md.
+[![Maven Central](https://img.shields.io/maven-central/v/com.optum.sourcehawk/sourcehawk-core.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.optum.sourcehawk%22%20AND%20a:%22sourcehawk-core%22) 
+[![Build Status](https://github.com/optum/sourcehawk/workflows/maven-ci/badge.svg)](https://github.com/optum/sourcehawk/actions)
+TODO: More Badges
 
-## Files included
+`Sourcehawk` is an extensible compliance as code tool which allows development teams to run compliance scans on their source code.  
 
-**CODE_OF_CONDUCT.md**
+## Documentation
+https://optum.github.io/sourcehawk
 
-Use without changes
+### Installation
+See distributions [README](distributions/README.md).
 
-**INDIVIDUAL_CONTRIBUTOR_LICENSE.md**
+### CLI Usage Manuals
 
-Use without changes
+* [Sourcehawk](https://optum.github.io/sourcehawk/#_sourcehawk1) - parent command
+* [Scan Manual](https://optum.github.io/sourcehawk/#_scan1) - `scan` command
+* [Vaidate Config Manual](https://optum.github.io/sourcehawk/#_validate_config1) - `validate-config` command
 
-**CONTRIBUTING.md**
-
-This file has some portions that are required and others that can be customized.
-Customize the Coding Standards section to mention the languages used by your project.
-Feel free to add any rules and requirements that you would like people to follow
-when contributing to your project.
-
-**NOTICE.txt**
-
-This file is needed if your project is licensed under the Apache 2.0 license.  
-If you are using this license, fill it out according to the prompts.  Otherwise,
-delete this file.
-
-## Additional Repo Updates
-
-Make sure that you have a project description and appropriate repository topics.
+## Contributing
+If you wish to contribute to the development of Sourcehawk please read [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
