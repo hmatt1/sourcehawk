@@ -17,7 +17,7 @@ See distributions [README](distributions/README.md).
 
 * [Sourcehawk](https://optum.github.io/sourcehawk/#_sourcehawk1) - parent command
 * [Scan Manual](https://optum.github.io/sourcehawk/#_scan1) - `scan` command
-* [Vaidate Config Manual](https://optum.github.io/sourcehawk/#_validate_config1) - `validate-config` command
+* [Validate Config Manual](https://optum.github.io/sourcehawk/#_validate_config1) - `validate-config` command
 
 ## Contributing
 If you wish to contribute to the development of Sourcehawk please read [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
