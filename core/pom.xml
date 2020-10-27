@@ -33,4 +33,21 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+
+            <!-- JACOCO OVERRIDES -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <excludes combine.children="append">
+                        <exclude>**/utils/ModifiableProperties.*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
 </project>

@@ -1,5 +1,6 @@
 package com.optum.sourcehawk.enforcer.file.common;
 
+import com.optum.sourcehawk.core.utils.ModifiableProperties;
 import com.optum.sourcehawk.core.utils.StringUtils;
 import com.optum.sourcehawk.enforcer.EnforcerResult;
 import com.optum.sourcehawk.enforcer.ResolverResult;
@@ -8,13 +9,9 @@ import com.optum.sourcehawk.enforcer.file.FileResolver;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.val;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.PropertiesConfigurationLayout;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Writer;
 import java.util.Objects;
 import java.util.Properties;
@@ -66,23 +63,21 @@ public class StringPropertyEquals extends AbstractFileEnforcer implements FileRe
     /** {@inheritDoc} */
     @Override
     public ResolverResult resolve(final @NonNull InputStream fileInputStream, final @NonNull Writer outputFileWriter) throws IOException {
-        val propertiesConfiguration = new PropertiesConfiguration();
-        val propertiesConfigurationLayout = new PropertiesConfigurationLayout(propertiesConfiguration);
-        try {
-            propertiesConfigurationLayout.load(new InputStreamReader(fileInputStream));
-            val actualPropertyValue = propertiesConfiguration.getString(propertyName);
-            if (propertiesConfiguration.containsKey(propertyName) && StringUtils.equals(expectedPropertyValue, actualPropertyValue)) {
-                return ResolverResult.NO_UPDATES;
-            }
-            val message = propertiesConfiguration.containsKey(propertyName)
-                    ? String.format(UPDATE_MESSAGE_TEMPLATE, propertyName, actualPropertyValue, expectedPropertyValue)
-                    : String.format(ADD_MESSAGE_TEMPLATE, propertyName, expectedPropertyValue);
-            propertiesConfiguration.setProperty(propertyName, expectedPropertyValue);
-            propertiesConfigurationLayout.save(outputFileWriter);
-            return ResolverResult.updatesApplied(message);
-        } catch (final ConfigurationException e) {
-            throw new IOException(e);
+        val modifiableProperties = ModifiableProperties.create(fileInputStream);
+        val actualPropertyValue = modifiableProperties.getProperty(propertyName);
+        if (modifiableProperties.containsKey(propertyName) && StringUtils.equals(expectedPropertyValue, actualPropertyValue)) {
+            return ResolverResult.NO_UPDATES;
         }
+        final String message;
+        if (modifiableProperties.containsKey(propertyName)) {
+            message = String.format(UPDATE_MESSAGE_TEMPLATE, propertyName, actualPropertyValue, expectedPropertyValue);
+            modifiableProperties.setProperty(propertyName, expectedPropertyValue);
+        } else {
+            message = String.format(ADD_MESSAGE_TEMPLATE, propertyName, expectedPropertyValue);
+            modifiableProperties.add(propertyName, expectedPropertyValue);
+        }
+        modifiableProperties.store(outputFileWriter, null);
+        return ResolverResult.updatesApplied(message);
     }
 
 }

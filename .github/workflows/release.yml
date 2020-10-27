@@ -61,6 +61,7 @@ jobs:
         if: always()
         uses: scacap/action-surefire-report@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml'
       - name: Publish Codecov Report
         if: always()

@@ -96,7 +96,7 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.11</version>
+            <version>0.9.12</version>
             <scope>test</scope>
         </dependency>
 
@@ -334,9 +334,6 @@
                                         <include>ch.qos.logback:*:*:*:*</include>
                                         <include>com.fasterxml.jackson.core:*:*:*:*</include>
                                         <include>com.fasterxml.jackson.dataformat:*:*:*:*</include>
-                                        <include>commons-configuration:commons-configuration:*:*:*</include> <!-- TODO: remove -->
-                                        <include>commons-lang:commons-lang:*:*:*</include> <!-- TODO: remove -->
-                                        <include>commons-logging:commons-logging:*:*:*</include> <!-- TODO: remove -->
                                         <include>com.jayway.jsonpath:json-path:*:*:*</include>
                                         <include>net.minidev:accessors-smart:*:*:*</include>
                                         <include>net.minidev:json-smart:*:*:*</include>

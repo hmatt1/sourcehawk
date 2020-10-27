@@ -1,13 +1,11 @@
 package com.optum.sourcehawk.exec.graal.nativeimage
 
-
-import com.google.common.io.Files
 import com.optum.sourcehawk.configuration.SourcehawkConfiguration
 import com.optum.sourcehawk.core.scan.ScanResult
 import com.optum.sourcehawk.enforcer.file.FileEnforcer
+import com.optum.sourcehawk.exec.FileBaseSpecification
 import com.optum.sourcehawk.protocol.FileProtocol
 import org.reflections.Reflections
-import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets
 
@@ -17,7 +15,7 @@ import java.nio.charset.StandardCharsets
  *
  * https://github.com/oracle/graal/blob/master/substratevm/REFLECTION.md
  */
-class ReflectConfigGeneratorSpec extends Specification {
+class ReflectConfigGeneratorSpec extends FileBaseSpecification {
 
     String nativeImageConfigFilePathPrefix = "target/classes/META-INF/native-image"
 
@@ -25,7 +23,7 @@ class ReflectConfigGeneratorSpec extends Specification {
         given:
         String generatedReflectionConfigFilePath = "${nativeImageConfigFilePathPrefix}/sourcehawk-generated/reflect-config.json"
         File generatedReflectionConfigFile = new File(generatedReflectionConfigFilePath)
-        Files.createParentDirs(generatedReflectionConfigFile)
+        createParentDirectories(generatedReflectionConfigFile)
         String generatedReflectionConfigTemplate = ReflectConfigGeneratorSpec
                 .getClassLoader()
                 .getResourceAsStream("reflect-config-template.json")

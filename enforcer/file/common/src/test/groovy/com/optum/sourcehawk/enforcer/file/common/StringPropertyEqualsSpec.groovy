@@ -170,9 +170,11 @@ class StringPropertyEqualsSpec extends Specification {
 
         when:
         Properties newProperties = new Properties()
-        newProperties.load(new StringReader(stringWriter.toString()))
+        String propertiesContents = stringWriter.toString()
+        newProperties.load(new StringReader(propertiesContents))
 
         then:
+        propertiesContents.contains("# preserved comment")
         newProperties.getProperty(propertyName) == expectedPropertyValue
     }
 

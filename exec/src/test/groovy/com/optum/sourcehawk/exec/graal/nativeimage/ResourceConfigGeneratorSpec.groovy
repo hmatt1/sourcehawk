@@ -1,9 +1,7 @@
 package com.optum.sourcehawk.exec.graal.nativeimage
 
-import com.google.common.io.Files
+import com.optum.sourcehawk.exec.FileBaseSpecification
 import com.optum.sourcehawk.exec.Sourcehawk
-
-import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets
 
@@ -13,7 +11,7 @@ import java.nio.charset.StandardCharsets
  *
  * https://github.com/oracle/graal/blob/master/substratevm/RESOURCES.md
  */
-class ResourceConfigGeneratorSpec extends Specification {
+class ResourceConfigGeneratorSpec extends FileBaseSpecification {
 
     String nativeImageConfigFilePathPrefix = "target/classes/META-INF/native-image"
 
@@ -21,7 +19,7 @@ class ResourceConfigGeneratorSpec extends Specification {
         given:
         String generatedResourcesConfigFilePath = "${nativeImageConfigFilePathPrefix}/sourcehawk-generated/resource-config.json"
         File generatedResourcesConfigFile = new File(generatedResourcesConfigFilePath)
-        Files.createParentDirs(generatedResourcesConfigFile)
+        createParentDirectories(generatedResourcesConfigFile)
         String generatedResourcesConfigTemplate = ResourceConfigGeneratorSpec
                 .getClassLoader()
                 .getResourceAsStream("resource-config-template.json")
