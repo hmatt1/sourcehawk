@@ -80,13 +80,6 @@ jobs:
         run: git tag -a "v$RELEASE_VERSION" -m "Release v$RELEASE_VERSION triggered by @$GITHUB_ACTOR" && git push origin --tags
         env:
           RELEASE_VERSION: ${{ steps.set_maven_project_version.outputs.RELEASE_VERSION }}
-      - name: Generate Changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.1.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          output: CHANGELOG.md
-          usernamesAsGithubLogins: true
-          stripGeneratorNotice: true
       - name: Create Release
         if: success()
         uses: actions/create-release@v1

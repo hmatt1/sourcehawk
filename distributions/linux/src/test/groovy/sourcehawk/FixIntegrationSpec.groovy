@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 class FixIntegrationSpec extends NativeImageSpecification {
 
     @Unroll
-    def "sourcehawk #command"() {
+    def "sourcehawk #args"() {
         when:
         Process process = new ProcessBuilder([executable] + args)
                 .redirectErrorStream(false)
