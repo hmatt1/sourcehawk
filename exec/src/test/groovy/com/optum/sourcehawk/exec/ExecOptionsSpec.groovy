@@ -18,7 +18,7 @@ class ExecOptionsSpec extends Specification {
         then:
         execOptions
         execOptions.repositoryRoot == Paths.get(".")
-        execOptions.configurationFileLocation == ".sourcehawk.yml"
+        execOptions.configurationFileLocation == "sourcehawk.yml"
         execOptions.verbosity == Verbosity.HIGH
 
         and:

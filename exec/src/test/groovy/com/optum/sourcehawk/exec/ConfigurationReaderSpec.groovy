@@ -19,7 +19,7 @@ class ConfigurationReaderSpec extends FileBaseSpecification {
 
     def "obtainInputStream - URL configuration file"() {
         given:
-        String configurationFileLocation = "https://raw.githubusercontent.com/optum/sourcehawk-parent/main/.sourcehawk/sourcehawk.yml"
+        String configurationFileLocation = "https://raw.githubusercontent.com/optum/sourcehawk-parent/main/.sourcehawk/config.yml"
 
         when:
         InputStream inputStream = ConfigurationReader.obtainInputStream(repositoryRoot, configurationFileLocation)
@@ -31,7 +31,7 @@ class ConfigurationReaderSpec extends FileBaseSpecification {
 
     def "obtainInputStream - absolute file"() {
         given:
-        String configurationFileLocation = repositoryRoot + "/sourcehawk.yml"
+        String configurationFileLocation = repositoryRoot.resolve("sourcehawk.yml").toAbsolutePath().toString()
 
         when:
         InputStream inputStream = ConfigurationReader.obtainInputStream(repositoryRoot, configurationFileLocation)
@@ -55,8 +55,8 @@ class ConfigurationReaderSpec extends FileBaseSpecification {
     def "merge files"() {
         given:
         LinkedHashSet set = [] as LinkedHashSet
-        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve(".sourcehawk-simple.yml"))
-        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve(".sourcehawk-simple2.yml"))
+        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve("sourcehawk-simple.yml"))
+        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve("sourcehawk-simple2.yml"))
 
         when:
         SourcehawkConfiguration configuration = ConfigurationReader.merge(set)
@@ -68,10 +68,10 @@ class ConfigurationReaderSpec extends FileBaseSpecification {
     def "merge files with dupes"() {
         given:
         LinkedHashSet set = [] as LinkedHashSet
-        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve(".sourcehawk-simple.yml"))
-        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve(".sourcehawk-simple2.yml"))
-        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve(".sourcehawk-simple3.yml"))
-        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve(".sourcehawk-simple3.yml"))
+        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve("sourcehawk-simple.yml"))
+        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve("sourcehawk-simple2.yml"))
+        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve("sourcehawk-simple3.yml"))
+        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve("sourcehawk-simple3.yml"))
 
         when:
         SourcehawkConfiguration configuration = ConfigurationReader.merge(set)
@@ -94,7 +94,7 @@ class ConfigurationReaderSpec extends FileBaseSpecification {
     def "merge files - null"() {
         given:
         LinkedHashSet set = [] as LinkedHashSet
-        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve(".sourcehawk-simple.yml"))
+        set << ConfigurationReader.parseConfiguration(testResourcesRoot.resolve("sourcehawk-simple.yml"))
         set << null
 
         when:

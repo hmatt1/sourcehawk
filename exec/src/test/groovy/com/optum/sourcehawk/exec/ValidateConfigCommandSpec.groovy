@@ -29,7 +29,7 @@ class ValidateConfigCommandSpec extends CliBaseSpecification {
 
     def "main: stdin (passed)"() {
         given:
-        System.in = IoUtil.getResourceAsStream("/.sourcehawk-simple.yml")
+        System.in = IoUtil.getResourceAsStream("/sourcehawk-simple.yml")
         OutputStream stdOut = new ByteArrayOutputStream()
         System.out = new PrintStream(stdOut)
 
@@ -103,7 +103,7 @@ class ValidateConfigCommandSpec extends CliBaseSpecification {
 
     def "main: invalid config - file protocol invalid (required field missing)"() {
         given:
-        String[] args = [ testResourcesRoot.resolve(".sourcehawk-invalid-protocol-missing-required.yml").toString() ]
+        String[] args = [ testResourcesRoot.resolve("sourcehawk-invalid-protocol-missing-required.yml").toString() ]
 
         when:
         ValidateConfigCommand.main(args)
@@ -115,7 +115,7 @@ class ValidateConfigCommandSpec extends CliBaseSpecification {
 
     def "main: invalid config - file protocol invalid"() {
         given:
-        String[] args = [ testResourcesRoot.resolve(".sourcehawk-invalid-protocol.yml").toString() ]
+        String[] args = [ testResourcesRoot.resolve("sourcehawk-invalid-protocol.yml").toString() ]
 
         when:
         ValidateConfigCommand.main(args)
@@ -127,7 +127,7 @@ class ValidateConfigCommandSpec extends CliBaseSpecification {
 
     def "main: invalid config - invalid enforcer class"() {
         given:
-        String[] args = [ testResourcesRoot.resolve(".sourcehawk-invalid-enforcer.yml") ]
+        String[] args = [ testResourcesRoot.resolve("sourcehawk-invalid-enforcer.yml") ]
 
         when:
         ValidateConfigCommand.main(args)
@@ -139,7 +139,7 @@ class ValidateConfigCommandSpec extends CliBaseSpecification {
 
     def "main: invalid config - invalid enforcer property"() {
         given:
-        String[] args = [ testResourcesRoot.resolve(".sourcehawk-invalid-enforcer-property.yml") ]
+        String[] args = [ testResourcesRoot.resolve("sourcehawk-invalid-enforcer-property.yml") ]
 
         when:
         ValidateConfigCommand.main(args)
@@ -151,7 +151,7 @@ class ValidateConfigCommandSpec extends CliBaseSpecification {
 
     def "main: invalid config - empty"() {
         given:
-        String[] args = [ testResourcesRoot.resolve(".sourcehawk-empty.yml") ]
+        String[] args = [ testResourcesRoot.resolve("sourcehawk-empty.yml") ]
 
         when:
         ValidateConfigCommand.main(args)

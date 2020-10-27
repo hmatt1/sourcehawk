@@ -136,7 +136,7 @@
                                     <artifacts>
                                         <artifact>
                                             <file>${native.image}</file>
-                                            <classifier>bin</classifier>
+                                            <classifier>x86_64</classifier>
                                             <type>zip</type>
                                         </artifact>
                                     </artifacts>

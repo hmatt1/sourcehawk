@@ -17,7 +17,7 @@
 
     <properties>
         <executable.name>${global.project.name}</executable.name>
-        <docker.namespace>optum</docker.namespace>
+        <docker.namespace>optum</docker.namespace> <!-- TODO: -->
         <docker.repository>${docker.namespace}/${executable.name}</docker.repository>
     </properties>
 

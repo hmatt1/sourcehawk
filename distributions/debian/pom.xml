@@ -25,7 +25,7 @@
             <groupId>com.optum.sourcehawk</groupId>
             <artifactId>sourcehawk-dist-linux</artifactId>
             <version>${project.version}</version>
-            <classifier>bin</classifier>
+            <classifier>x86_64</classifier>
             <type>zip</type>
             <scope>provided</scope>
         </dependency>
@@ -72,7 +72,7 @@
                                 <artifactItem>
                                     <groupId>com.optum.sourcehawk</groupId>
                                     <artifactId>sourcehawk-dist-linux</artifactId>
-                                    <classifier>bin</classifier>
+                                    <classifier>x86_64</classifier>
                                     <type>zip</type>
                                     <outputDirectory>${debian.build.directory}/usr/local/bin</outputDirectory>
                                     <destFileName>${executable.name}</destFileName>

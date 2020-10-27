@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.optum.sourcehawk</groupId>
         <artifactId>sourcehawk-jar-parent</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath/>
     </parent>
 
@@ -154,5 +154,20 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>ci.snapshot</id>
+            <properties>
+                <docker.push.skip>false</docker.push.skip>
+            </properties>
+        </profile>
+        <profile>
+            <id>ci.release</id>
+            <properties>
+                <docker.push.skip>false</docker.push.skip>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

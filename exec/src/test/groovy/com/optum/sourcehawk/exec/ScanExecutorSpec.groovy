@@ -24,7 +24,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(repositoryRoot.resolve("/sourcehawk.yml"))
+                .configurationFileLocation(repositoryRoot.resolve("sourcehawk.yml").toAbsolutePath().toString())
                 .build()
 
         when:
@@ -84,7 +84,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation("https://raw.githubusercontent.com/optum/sourcehawk-parent/main/.sourcehawk/sourcehawk.yml")
+                .configurationFileLocation("https://raw.githubusercontent.com/optum/sourcehawk-parent/main/.sourcehawk/config.yml")
                 .build()
 
         when:
@@ -114,7 +114,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(testResourcesRoot.resolve(".sourcehawk-file-not-found.yml").toString())
+                .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-file-not-found.yml").toString())
                 .build()
 
         when:
@@ -132,7 +132,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(testResourcesRoot.resolve(".sourcehawk-file-not-found-enforcers.yml").toString())
+                .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-file-not-found-enforcers.yml").toString())
                 .build()
 
         when:
@@ -150,7 +150,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(testResourcesRoot.resolve(".sourcehawk-no-enforcers.yml").toString())
+                .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-no-enforcers.yml").toString())
                 .build()
 
         when:
@@ -168,7 +168,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(testResourcesRoot.resolve(".sourcehawk-failed-enforcer.yml").toString())
+                .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-failed-enforcer.yml").toString())
                 .build()
 
         when:

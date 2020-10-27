@@ -22,7 +22,7 @@ class FixExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk.yml").toAbsolutePath().toString())
+                .configurationFileLocation(repositoryRoot.resolve("sourcehawk.yml").toAbsolutePath().toString())
                 .build()
 
         when:
@@ -37,7 +37,7 @@ class FixExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk/.sourcehawk-override.yml").toString())
+                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk/override.yml").toString())
                 .build()
 
         when:
@@ -52,7 +52,7 @@ class FixExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk/.sourcehawk-bad-url.yml").toString())
+                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk/bad-url.yml").toString())
                 .build()
 
         when:
@@ -67,7 +67,7 @@ class FixExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk/.sourcehawk-local.yml").toString())
+                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk/local.yml").toString())
                 .build()
 
         when:
@@ -82,7 +82,7 @@ class FixExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation("https://github.optum.com/raw/sourcehawk-projects/static-files/master/.sourcehawk.yml")
+                .configurationFileLocation("https://raw.githubusercontent.com/optum/sourcehawk-parent/main/.sourcehawk/config.yml")
                 .build()
 
         when:
@@ -113,7 +113,7 @@ class FixExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(testResourcesRoot.resolve(".sourcehawk-file-not-found.yml").toString())
+                .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-file-not-found.yml").toString())
                 .build()
 
         when:
@@ -131,7 +131,7 @@ class FixExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(testResourcesRoot.resolve(".sourcehawk-file-not-found-enforcers.yml").toString())
+                .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-file-not-found-enforcers.yml").toString())
                 .build()
 
         when:
@@ -149,7 +149,7 @@ class FixExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(testResourcesRoot.resolve(".sourcehawk-no-enforcers.yml").toString())
+                .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-no-enforcers.yml").toString())
                 .build()
 
         when:

@@ -44,7 +44,7 @@ class ScanCommandSpec extends CliBaseSpecification {
 
     def "main: enforcer fails (failed)"() {
         given:
-        String[] args = ["-c", ".sourcehawk-failed-enforcer.yml", testResourcesRoot.toString()]
+        String[] args = ["-c", "sourcehawk-failed-enforcer.yml", testResourcesRoot.toString()]
 
         when:
         ScanCommand.main(args)

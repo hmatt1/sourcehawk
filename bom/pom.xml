@@ -76,7 +76,7 @@
                 <groupId>com.optum.sourcehawk</groupId>
                 <artifactId>sourcehawk-dist-linux</artifactId>
                 <version>${bom.version}</version>
-                <classifier>bin</classifier>
+                <classifier>x86_64</classifier>
                 <type>zip</type>
             </dependency>
             <dependency>

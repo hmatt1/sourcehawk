@@ -42,7 +42,7 @@ class FixCommandSpec extends CliBaseSpecification {
 
     def "main: configuration file not found (failed)"() {
         given:
-        String[] args = ["-c", ".sourcehawk.yml"]
+        String[] args = ["-c", "sourcehawk.yml"]
 
         when:
         FixCommand.main(args)
