@@ -13,6 +13,6 @@ if curl -s "$DOWNLOAD_URL" -o "$INSTALL_PATH"; then
   chmod +x "$INSTALL_PATH"
   sourcehawk -V
 else
-  echo "Sourcehawk is not yet available on your platform: $PLATFORM"
+  echo "Sourcehawk is not yet available on your architecture: $ARCH"
   exit 1
 fi
