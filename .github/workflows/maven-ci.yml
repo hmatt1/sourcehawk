@@ -73,29 +73,21 @@ jobs:
         run: |
           JACOCO_XML_REPORT_PATHS=$(find . -name "jacoco.xml" -printf '%P\n' | tr '\r\n' ',')
           echo ::set-output name=JACOCO_XML_REPORT_PATHS::$JACOCO_XML_REPORT_PATHS
-      - name: Analyze with Sonar
+      - name: Analyze with SonarCloud
         if: success() && (github.event_name == 'push')
-        run: |
-          ./mvnw --batch-mode sonar:sonar \
-              -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=$SONAR_TOKEN \
-              -Dsonar.organization=$SONAR_ORGANIZATION \
-              -Dsonar.coverage.jacoco.xmlReportPaths="$JACOCO_XML_REPORT_PATHS" \
-              -Dsonar.junit.reportPaths="**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml" \
-              -Dsonar.java.checkstyle.reportPaths="**/target/checkstyle-result.xml"
+        run: ./mvnw --batch-mode sonar:sonar -Dsonar.organization=optum -Dsonar.projectKey=optum_sourcehawk -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          JACOCO_XML_REPORT_PATHS: ${{ steps.aggregate_coverage_reports.outputs.JACOCO_XML_REPORT_PATHS }}
-          SONAR_ORGANIZATION: optum
           SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
       - name: Publish Test Report
         if: always()
         uses: scacap/action-surefire-report@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml'
       - name: Publish Codecov Report
         if: always()
         uses: codecov/codecov-action@v1
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{ steps.aggregate_coverage_reports.outputs.JACOCO_XML_REPORT_PATHS }}
