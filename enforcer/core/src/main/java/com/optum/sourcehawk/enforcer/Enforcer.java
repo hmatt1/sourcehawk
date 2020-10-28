@@ -17,6 +17,7 @@ public interface Enforcer<T> {
      *
      * @param input the enforcer input
      * @return the enforcer result
+     * @throws IOException if any error occurs processing the input
      */
     EnforcerResult enforce(@NonNull final T input) throws IOException;
 

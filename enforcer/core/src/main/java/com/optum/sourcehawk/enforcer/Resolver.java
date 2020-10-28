@@ -19,6 +19,7 @@ public interface Resolver<T, S> {
      * @param input the resolver input
      * @param output the resolver output
      * @return the resolver result
+     * @throws IOException if any error occurs processing input or output
      */
     ResolverResult resolve(@NonNull final T input, @NonNull final S output) throws IOException;
 

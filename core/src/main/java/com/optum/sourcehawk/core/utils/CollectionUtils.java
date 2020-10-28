@@ -15,6 +15,7 @@ public class CollectionUtils {
     /**
      * Determine if the collection is empty (null or has zero elements)
      *
+     * @param <T> the type of the elements in the collection
      * @param collection the collection to check
      * @return true if empty, false otherwise
      */
@@ -25,6 +26,7 @@ public class CollectionUtils {
     /**
      * Determine if the collection is NOT empty (has at least one element)
      *
+     * @param <T> the type of the elements in the collection
      * @param collection the collection to check
      * @return true if NOT empty, false otherwise
      */
