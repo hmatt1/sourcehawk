@@ -17,7 +17,6 @@
     <packaging>pom</packaging>
 
     <properties>
-        <docker.push.skip>true</docker.push.skip>
         <docker.tag>${project.version}-alpine</docker.tag>
     </properties>
 
@@ -115,7 +114,6 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <skip>${docker.push.skip}</skip>
                             <executable>../scripts/deploy-docker-image.sh</executable>
                             <arguments>
                                 <argument>${docker.repository}:${docker.tag}</argument>
@@ -128,5 +126,34 @@
 
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>ci.release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy-docker-image</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>../scripts/deploy-docker-image.sh</executable>
+                                    <arguments>
+                                        <argument>${docker.repository}:${docker.tag}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

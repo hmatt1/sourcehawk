@@ -57,19 +57,8 @@ jobs:
         run: |
           JACOCO_XML_REPORT_PATHS=$(find . -name "jacoco.xml" -printf '%P\n' | tr '\r\n' ',')
           echo ::set-output name=JACOCO_XML_REPORT_PATHS::$JACOCO_XML_REPORT_PATHS
-      - name: Publish Test Report
-        if: always()
-        uses: scacap/action-surefire-report@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml'
-      - name: Publish Codecov Report
-        if: always()
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ${{ steps.aggregate_coverage_reports.outputs.JACOCO_XML_REPORT_PATHS }}
       - name: Generate Changelog
+        if: success()
         uses: heinrichreimer/github-changelog-generator-action@v2.1.1
         with:
           futureRelease: ${{ format('v{0}', steps.set_maven_project_version.outputs.RELEASE_VERSION) }}
