@@ -89,7 +89,7 @@ jobs:
           draft: ${{ github.event.inputs.draft }}
           prerelease: ${{ github.event.inputs.prerelease }}
       - name: Publish Github Pages
-        if: success() && (github.event.inputs.ref == github.repository.default_branch)
+        if: success()
         continue-on-error: true
         uses: jamesives/github-pages-deploy-action@3.7.1
         with:

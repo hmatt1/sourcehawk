@@ -1,4 +1,3 @@
-api-version: 0.2
 
 # Composable recursive source hawk configs (Must be public repo)
 config-locations:

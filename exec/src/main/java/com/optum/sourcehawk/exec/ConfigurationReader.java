@@ -158,7 +158,7 @@ class ConfigurationReader {
      * @return the merged configurations
      */
     public SourcehawkConfiguration merge(final Set<SourcehawkConfiguration> sourcehawkConfigurations) {
-        SourcehawkConfiguration sourcehawkConfiguration = SourcehawkConfiguration.of("0.0", new LinkedHashSet<>(), new HashSet<>());
+        SourcehawkConfiguration sourcehawkConfiguration = SourcehawkConfiguration.of(new LinkedHashSet<>(), new HashSet<>());
         if (CollectionUtils.isNotEmpty(sourcehawkConfigurations)) {
             if (sourcehawkConfigurations.size() == 1) {
                 return Optional.ofNullable(sourcehawkConfigurations.iterator().next())

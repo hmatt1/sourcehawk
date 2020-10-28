@@ -1,11 +1,13 @@
-FROM alpine:3.12
+#FROM alpine:3.12
+FROM debian:buster-slim
 
 # Setup user and group
 ENV GROUP=sourcehawk USER=sourcehawk
-RUN addgroup ${GROUP} && adduser -h /home/${USER} -G sourcehawk -D ${USER}
+#RUN addgroup ${GROUP} && adduser -h /home/${USER} -G sourcehawk -D ${USER}
+RUN groupadd ${GROUP} && useradd -d /home/${USER} -g ${GROUP} ${USER}
 
 # Copy the native image executable into the image
-ARG NATIVE_IMAGE_PATH="target/native-image"
+ARG NATIVE_IMAGE_PATH
 COPY --chown=${GROUP}:${USER} ${NATIVE_IMAGE_PATH} /usr/bin/sourcehawk
 
 # Give the native image executable permissions
