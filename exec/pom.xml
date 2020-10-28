@@ -203,14 +203,6 @@
                 </dependencies>
             </plugin>
 
-            <!-- SKIP JAVADOC PROCESSING FOR PICOCLI -->
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <excludePackageNames>picocli.*</excludePackageNames>
-                </configuration>
-            </plugin>
-
             <!-- ATTACH BASH COMPLETION SCRIPT ARTIFACT-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -396,6 +388,14 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
                     <excludes combine.self="append">**/picocli/*.java</excludes>
+                </configuration>
+            </plugin>
+
+            <!-- JAVADOC OVERRIDES -->
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <excludePackageNames>picocli</excludePackageNames>
                 </configuration>
             </plugin>
 

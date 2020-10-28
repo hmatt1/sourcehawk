@@ -14,6 +14,7 @@
     </parent>
 
     <artifactId>sourcehawk-protocol</artifactId>
+    <name>Sourcehawk Protocol</name>
     <packaging>pom</packaging>
 
     <modules>

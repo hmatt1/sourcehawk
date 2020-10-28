@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-protocol-file</artifactId>
+    <name>Sourcehawk Protocol File</name>
     <packaging>jar</packaging>
 
     <dependencies>
