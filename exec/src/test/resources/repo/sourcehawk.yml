@@ -1,4 +1,3 @@
-api-version: 0.2
 
 file-protocols:
   - name: Lombok Config Override

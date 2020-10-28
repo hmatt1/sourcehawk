@@ -16,11 +16,6 @@ import java.util.Collection;
 public class SourcehawkConfiguration {
 
     /**
-     * The API version of the configuration
-     */
-    String apiVersion;
-
-    /**
      * The remote files to inherit from in URL form
      */
     @JsonMerge
