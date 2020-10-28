@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-dist-docker</artifactId>
+    <name>Sourcehawk Distributions Docker</name>
     <packaging>pom</packaging>
 
     <properties>

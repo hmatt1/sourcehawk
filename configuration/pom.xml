@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>sourcehawk-configuration</artifactId>
+    <name>Sourcehawk Configuration</name>
     <packaging>jar</packaging>
 
     <dependencies>

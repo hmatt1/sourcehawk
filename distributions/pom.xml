@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-dist</artifactId>
+    <name>Sourcehawk Distributions</name>
     <packaging>pom</packaging>
 
     <properties>

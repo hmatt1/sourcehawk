@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-exec</artifactId>
+    <name>Sourcehawk Exec</name>
     <packaging>jar</packaging>
 
     <properties>
@@ -238,7 +239,9 @@
                         </goals>
                         <phase>process-classes</phase>
                         <configuration>
-                            <sourceHighlighter>coderay</sourceHighlighter>
+                            <attributes>
+                                <source-highlighter>coderay</source-highlighter>
+                            </attributes>
                             <backend>html5</backend>
                             <sourceDirectory>${project.basedir}/src/main/asciidoc</sourceDirectory>
                             <sourceDocumentName>index.adoc</sourceDocumentName>
@@ -252,7 +255,9 @@
                         </goals>
                         <phase>process-classes</phase>
                         <configuration>
-                            <sourceHighlighter>coderay</sourceHighlighter>
+                            <attributes>
+                                <source-highlighter>coderay</source-highlighter>
+                            </attributes>
                             <backend>manpage</backend>
                             <sourceDirectory>${project.build.directory}/generated-docs</sourceDirectory>
                             <outputDirectory>${project.parent.basedir}/gh-pages/manpages</outputDirectory>

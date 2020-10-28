@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-enforcer-core</artifactId>
+    <name>Sourcehawk Enforcer Core</name>
     <packaging>jar</packaging>
 
     <dependencies>

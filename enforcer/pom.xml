@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-enforcer</artifactId>
+    <name>Sourcehawk Enforcer</name>
     <packaging>pom</packaging>
 
     <modules>

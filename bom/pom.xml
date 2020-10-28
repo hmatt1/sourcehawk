@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>sourcehawk-bom</artifactId>
+    <name>Sourcehawk BOM</name>
     <packaging>pom</packaging>
 
     <properties>

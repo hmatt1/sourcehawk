@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-dist-linux</artifactId>
+    <name>Sourcehawk Distributions Linux</name>
     <packaging>pom</packaging>
 
     <dependencies>

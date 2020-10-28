@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-enforcer-file-docker</artifactId>
+    <name>Sourcehawk Enforcer File Docker</name>
     <packaging>jar</packaging>
 
     <dependencies>

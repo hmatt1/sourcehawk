@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-core</artifactId>
+    <name>Sourcehawk Core</name>
     <packaging>jar</packaging>
 
     <dependencies>

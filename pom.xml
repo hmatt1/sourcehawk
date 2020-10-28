@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.optum.sourcehawk</groupId>
         <artifactId>sourcehawk-jar-parent</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
         <relativePath/>
     </parent>
 
@@ -158,29 +158,5 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <profiles>
-        <profile>
-            <id>ci.snapshot</id>
-            <properties>
-                <docker.push.skip>false</docker.push.skip>
-            </properties>
-        </profile>
-        <profile>
-            <id>ci.release</id>
-            <properties>
-                <docker.push.skip>false</docker.push.skip>
-            </properties>
-        </profile>
-        <profile>
-            <id>sonarcloud</id>
-            <properties>
-                <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-                <sonar.organization>optum</sonar.organization>
-                <sonar.projectKey>optum_sourcehawk</sonar.projectKey>
-                <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
-            </properties>
-        </profile>
-    </profiles>
 
 </project>

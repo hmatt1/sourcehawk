@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-dist-debian</artifactId>
+    <name>Sourcehawk Distributions Debian</name>
     <packaging>pom</packaging>
 
     <properties>
@@ -89,7 +90,7 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>build-and-tag-local</id>
+                        <id>build-and-tag</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>build</goal>
@@ -144,7 +145,7 @@
                         <goals>
                             <goal>attach-artifact</goal>
                         </goals>
-                        <phase>verify</phase>
+                        <phase>post-integration-test</phase>
                         <configuration>
                             <artifacts>
                                 <artifact>

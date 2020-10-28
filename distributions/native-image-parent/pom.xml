@@ -13,6 +13,7 @@
     </parent>
 
     <artifactId>sourcehawk-dist-native-image-parent</artifactId>
+    <name>Sourcehawk Distributions Native Image Parent</name>
     <packaging>pom</packaging>
 
     <properties>
@@ -106,7 +107,7 @@
                             <!-- VERIFY EXECUTABLE -->
                             <execution>
                                 <id>verify-native-image-execution</id>
-                                <phase>verify</phase>
+                                <phase>integration-test</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
@@ -131,7 +132,7 @@
                                 <goals>
                                     <goal>attach-artifact</goal>
                                 </goals>
-                                <phase>verify</phase>
+                                <phase>post-integration-test</phase>
                                 <configuration>
                                     <artifacts>
                                         <artifact>
