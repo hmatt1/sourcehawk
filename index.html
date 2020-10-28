@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="author" content="Brian Wyka | Christian Oestreich">
+<title>&gt;_ S O U R C E H A W K</title>
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+
+@import url(//fonts.googleapis.com/css?family=Noto+Sans);
+@import url(//asciidoctor.org/stylesheets/asciidoctor.css); /* Default asciidoc style framework - important */
+
+/* CUSTOMISATIONS */
+/* Change the values in root for quick customisation. If you want even more fine grain... venture further. */
+
+:root{
+--maincolor:#303846;
+--primarycolor:#2979ff;
+--secondarycolor:#5c6bc0;
+--tertiarycolor: #7c4dff;
+--textcolor: #e0e0e0;
+--sidebarbackground:#18191a;
+--footerbackground:#18191a;
+--linkcolor:#5c6bc0;
+--linkcoloralternate:#5c6bc0;
+--white:#FFFFFF;
+--black:#000000;
+}
+
+body{color:#ececec;background:var(--maincolor); font-family: "Noto Sans",sans-serif;}
+
+#header{background-color:var(--);padding:1em;max-width: none;}
+#footer{background-color: var(--footerbackground);}
+#header>h1:first-child {
+    margin-top: .2em;
+}
+
+@media screen and (min-width: 768px) {
+    h1 {
+        font-size: 4em;
+    }
+}
+
+h1{color:var(--primarycolor) !important;font-family:"Noto Sans",sans-serif;text-decoration:none;padding-bottom:.25em;}
+h2,h3{color:var(--secondarycolor) !important;font-family:"Noto Sans",sans-serif;text-decoration:none;padding-bottom:10px;}
+#header h2{color:var(--white)}
+#header .details {
+    color: var(--textcolor);
+    padding-bottom: 2em;
+}
+h4,h5,h6{color:var(--tertiarycolor);}
+.title{color:var(--sidebarbackground) !important;font-family:"Noto Sans",sans-serif;font-style: normal; font-weight: normal;}
+p{font-family: "Noto Sans",sans-serif ! important}
+#toc.toc2 a:link{color:white;}
+
+@media screen and (max-width: 767px) {
+    #toc.toc2 {
+        padding: .8em .6em;
+    }
+}
+
+#content {
+    margin-right: .4em;
+    margin-left: .4em;
+}
+
+#content a {
+  text-decoration: none;
+  color: var(--linkcolor);
+}
+#content a:hover {
+  color: var(--linkcoloralternate);
+}
+.quoteblock blockquote::before {
+  color: var(--linkcolor);
+}
+mark {
+  color: var(--white);
+  background-color: var(--linkcolor);
+}
+
+/* Card styling */
+.sect1{border-bottom:1px solid grey;border-radius:1px;}
+
+/* Table styles */
+th{background-color: var(--linkcolor);color:#FFFFFF;}
+
+#toc{}
+#toc.toc2{background-color:var(--sidebarbackground);color:white !important;}
+#toc a{color:var(--white);}
+#toc a:link{color:var(--white);}
+#toc a:active{color:var(--white) !important;}
+#toc a:hover{color:var(--white) !important; text-decoration: underline;}
+#toc a:visited{color:var(--white) !important;}
+#toctitle{color:var(--secondarycolor);font-size: 2em;}
+
+.paragraph.lead>p,
+#preamble>.sectionbody>[class="paragraph"]:first-of-type p {
+    color: #fefefe;
+}
+
+/* Responsiveness fixes */
+video {
+  max-width: 100%;
+}
+
+@media all and (max-width: 600px) {
+    table {
+      width: 55vw!important;
+      font-size: 3vw;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #toc.toc2 {
+        border-right: 0px;
+    }
+}
+
+.literalblock pre,
+.listingblock pre:not(.highlight),
+.listingblock pre[class="highlight"],
+.listingblock pre[class^="highlight "],
+.listingblock pre.CodeRay,
+.listingblock pre.prettyprint {
+    color: #c0c0c0;
+    background: #202020;
+}
+</style>
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>&gt;_ S O U R C E H A W K</h1>
+<div class="details">
+<span id="author" class="author">Brian Wyka | Christian Oestreich</span><br>
+<span id="revnumber">version 0.1.3</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_usage_manuals">Usage Manuals</a>
+<ul class="sectlevel2">
+<li><a href="#_sourcehawk1">sourcehawk(1)</a></li>
+<li><a href="#_validate_config1">validate-config(1)</a></li>
+<li><a href="#_scan1">scan(1)</a></li>
+<li><a href="#_fix1">fix(1)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sourcehawk is an extensible compliance as code tool which allows development teams to automate custom
+compliance scans on their source code.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation">Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sourcehawk is available for download via a number of TODO[distributions].</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usage_manuals">Usage Manuals</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sourcehawk is available to be run as a command line tool.  The following commands
+are available.</p>
+</div>
+<div class="sect2">
+<h3 id="_sourcehawk1">sourcehawk(1)</h3>
+<div class="sect3">
+<h4 id="_name">Name</h4>
+<div class="paragraph">
+<p>sourcehawk - Watch over your source like a hawk&#8230;&#8203;</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_synopsis">Synopsis</h4>
+<div class="paragraph">
+<p><strong>sourcehawk</strong> [<strong>-hV</strong>] [COMMAND]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description">Description</h4>
+<div class="paragraph">
+<p>Watch over your source like a hawk&#8230;&#8203;</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_options">Options</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Show this help message and exit.</p>
+</dd>
+<dt class="hdlist1"><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Print version information and exit.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_commands">Commands</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>help</strong></dt>
+<dd>
+<p>Displays help information about the specified command</p>
+</dd>
+<dt class="hdlist1"><strong>scan</strong>, <strong>flyover</strong>, <strong>survey</strong></dt>
+<dd>
+<p>Runs a scan on the source code</p>
+</dd>
+<dt class="hdlist1"><strong>validate-config</strong>, <strong>vc</strong></dt>
+<dd>
+<p>Validate configuration</p>
+</dd>
+<dt class="hdlist1"><strong>fix</strong>, <strong>correct</strong>, <strong>resolve</strong></dt>
+<dd>
+<p>Fix source based on configuration</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_validate_config1">validate-config(1)</h3>
+<div class="sect3">
+<h4 id="_name_2">Name</h4>
+<div class="paragraph">
+<p>validate-config - Validate configuration</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_synopsis_2">Synopsis</h4>
+<div class="paragraph">
+<p><strong>validate-config</strong> [<strong>-hV</strong>] <em>&lt;configFilePath&gt;</em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description_2">Description</h4>
+<div class="paragraph">
+<p>Validate configuration</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_options_2">Options</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Show this help message and exit.</p>
+</dd>
+<dt class="hdlist1"><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Print version information and exit.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_arguments">Arguments</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><em>&lt;configFilePath&gt;</em></dt>
+<dd>
+<p>The path to the configuration file, use '-' to supply configuration from stdin</p>
+<div class="literalblock">
+<div class="content">
+<pre>Default: sourcehawk.yml</pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scan1">scan(1)</h3>
+<div class="sect3">
+<h4 id="_name_3">Name</h4>
+<div class="paragraph">
+<p>scan - Runs a scan on the source code</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_synopsis_3">Synopsis</h4>
+<div class="paragraph">
+<p><strong>scan</strong> [<strong>-hV</strong>] [<strong>-f</strong>=<em>&lt;outputFormat&gt;</em>] [<strong>-v</strong>=<em>&lt;verbosity&gt;</em>] [[<strong>-c</strong>=<em>config-file-path</em>] |
+     <strong>-cfu</strong>=<em>config-file-url</em>] [<em>REPO-ROOT</em>] [COMMAND]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description_3">Description</h4>
+<div class="paragraph">
+<p>Runs a scan on the source code</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_options_3">Options</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>-c</strong>, <strong>-cf, --config-file</strong>=<em>config-file-path</em></dt>
+<dd>
+<p>The configuration file, can be relative to REPO-ROOT, or absolute</p>
+<div class="literalblock">
+<div class="content">
+<pre>Default: sourcehawk.yml</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><strong>-cfu, --config-file-url</strong>=<em>config-file-url</em></dt>
+<dd>
+<p>The configuration file URL</p>
+</dd>
+<dt class="hdlist1"><strong>-f</strong>, <strong>--output-format</strong>=<em>&lt;outputFormat&gt;</em></dt>
+<dd>
+<p>Output Format, valid values: CONSOLE, TEXT, JSON, MARKDOWN</p>
+<div class="literalblock">
+<div class="content">
+<pre>Default: CONSOLE</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Show this help message and exit.</p>
+</dd>
+<dt class="hdlist1"><strong>-v</strong>, <strong>--verbosity</strong>=<em>&lt;verbosity&gt;</em></dt>
+<dd>
+<p>Verbosity of output, valid values: ZERO, LOW, MEDIUM, HIGH</p>
+<div class="literalblock">
+<div class="content">
+<pre>Default: HIGH</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Print version information and exit.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_arguments_2">Arguments</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[<em>REPO-ROOT</em>]</dt>
+<dd>
+<p>The repository root on the file system to scan relative to, defaults to current directory</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_commands_2">Commands</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>help</strong></dt>
+<dd>
+<p>Displays help information about the specified command</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fix1">fix(1)</h3>
+<div class="sect3">
+<h4 id="_name_4">Name</h4>
+<div class="paragraph">
+<p>fix - Fix source based on configuration</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_synopsis_4">Synopsis</h4>
+<div class="paragraph">
+<p><strong>fix</strong> [<strong>-dhV</strong>] [<strong>-f</strong>=<em>&lt;outputFormat&gt;</em>] [<strong>-v</strong>=<em>&lt;verbosity&gt;</em>] [[<strong>-c</strong>=<em>config-file-path</em>] |
+    <strong>-cfu</strong>=<em>config-file-url</em>] [<em>REPO-ROOT</em>] [COMMAND]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description_4">Description</h4>
+<div class="paragraph">
+<p>Fix source based on configuration</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_options_4">Options</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>-c</strong>, <strong>-cf, --config-file</strong>=<em>config-file-path</em></dt>
+<dd>
+<p>The configuration file, can be relative to REPO-ROOT, or absolute</p>
+<div class="literalblock">
+<div class="content">
+<pre>Default: sourcehawk.yml</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><strong>-cfu, --config-file-url</strong>=<em>config-file-url</em></dt>
+<dd>
+<p>The configuration file URL</p>
+</dd>
+<dt class="hdlist1"><strong>-d</strong>, <strong>--dry-run</strong></dt>
+<dd>
+<p>Display fixes which would be performed, but do not perform them</p>
+</dd>
+<dt class="hdlist1"><strong>-f</strong>, <strong>--output-format</strong>=<em>&lt;outputFormat&gt;</em></dt>
+<dd>
+<p>Output Format, valid values: CONSOLE, TEXT, JSON, MARKDOWN</p>
+<div class="literalblock">
+<div class="content">
+<pre>Default: CONSOLE</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Show this help message and exit.</p>
+</dd>
+<dt class="hdlist1"><strong>-v</strong>, <strong>--verbosity</strong>=<em>&lt;verbosity&gt;</em></dt>
+<dd>
+<p>Verbosity of output, valid values: ZERO, LOW, MEDIUM, HIGH</p>
+<div class="literalblock">
+<div class="content">
+<pre>Default: HIGH</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Print version information and exit.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_arguments_3">Arguments</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[<em>REPO-ROOT</em>]</dt>
+<dd>
+<p>The repository root on the file system to scan relative to, defaults to current directory</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_commands_3">Commands</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>help</strong></dt>
+<dd>
+<p>Displays help information about the specified command</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1.3<br>
+Last updated 2020-10-28 19:44:58 UTC
+</div>
+</div>
+</body>
+</html>
