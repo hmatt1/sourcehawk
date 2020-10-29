@@ -6,7 +6,7 @@ Sourcehawk
 ![Docker Image Version](https://img.shields.io/docker/v/optumopensource/sourcehawk) 
 
 [![Build Status](https://github.com/optum/sourcehawk/workflows/Maven%20CI/badge.svg)](https://github.com/optum/sourcehawk/actions) 
-[![Sourcehawk Scan](https://github.com/optum/sourcehawk/workflows/sourcehawk/badge.svg)](https://github.com/optum/sourcehawk/actions)
+[![Sourcehawk Scan](https://github.com/optum/sourcehawk/workflows/Sourcehawk%20Scan/badge.svg)](https://github.com/optum/sourcehawk/actions)
 
 `Sourcehawk` is an extensible compliance as code tool which allows development teams to run compliance scans on their source code.  
 

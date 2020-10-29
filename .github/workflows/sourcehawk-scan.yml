@@ -1,4 +1,4 @@
-name: sourcehawk
+name: Sourcehawk Scan
 on:
   push:
     branches:
