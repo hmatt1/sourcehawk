@@ -1,15 +1,12 @@
 package com.optum.sourcehawk.exec
 
-
 import com.optum.sourcehawk.core.scan.ScanResult
-
 import com.optum.sourcehawk.core.scan.Severity
 import com.optum.sourcehawk.enforcer.EnforcerResult
 import com.optum.sourcehawk.enforcer.file.common.StringPropertyEquals
 import com.optum.sourcehawk.protocol.FileProtocol
-import spock.lang.Specification
 
-class ScanResultFactorySpec extends Specification {
+class ScanResultFactorySpec extends FileBaseSpecification {
 
     def "enforcerResult - passed"() {
         given:
@@ -24,7 +21,7 @@ class ScanResultFactorySpec extends Specification {
         EnforcerResult enforcerResult = EnforcerResult.passed()
 
         when:
-        ScanResult scanResult = ScanResultFactory.enforcerResult(fileProtocol, enforcerResult)
+        ScanResult scanResult = ScanResultFactory.enforcerResult(repositoryRoot.toString(), fileProtocol, enforcerResult)
 
         then:
         scanResult
@@ -48,7 +45,7 @@ class ScanResultFactorySpec extends Specification {
         EnforcerResult enforcerResult = EnforcerResult.failed("Property [key] is null")
 
         when:
-        ScanResult scanResult = ScanResultFactory.enforcerResult(fileProtocol, enforcerResult)
+        ScanResult scanResult = ScanResultFactory.enforcerResult(fileProtocol.repositoryPath, fileProtocol, enforcerResult)
 
         then:
         scanResult
@@ -89,7 +86,7 @@ class ScanResultFactorySpec extends Specification {
                 .build()
 
         when:
-        ScanResult scanResult = ScanResultFactory.enforcerResult(fileProtocol, enforcerResult)
+        ScanResult scanResult = ScanResultFactory.enforcerResult(fileProtocol.repositoryPath, fileProtocol, enforcerResult)
 
         then:
         scanResult

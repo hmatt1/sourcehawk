@@ -50,6 +50,21 @@ class ScanExecutorSpec extends FileBaseSpecification {
         scanResult.passed
     }
 
+    def "scan - local override - glob pattern"() {
+        given:
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(repositoryRoot)
+                .configurationFileLocation(repositoryRoot.resolve(".test/sourcehawk-glob-example.yml").toString())
+                .build()
+
+        when:
+        ScanResult scanResult = ScanExecutor.scan(execOptions)
+
+        then:
+        scanResult
+        !scanResult.passed
+    }
+
     def "scan - bad url"() {
         given:
         ExecOptions execOptions = ExecOptions.builder()
@@ -234,7 +249,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
                 .build()
 
         when:
-        ScanResult scanResult = ScanExecutor.enforceFileProtocol(mockRepositoryFileReader, fileProtocol)
+        ScanResult scanResult = ScanExecutor.enforceFileProtocol(repositoryRoot, mockRepositoryFileReader, fileProtocol)
 
         then:
         0 * _

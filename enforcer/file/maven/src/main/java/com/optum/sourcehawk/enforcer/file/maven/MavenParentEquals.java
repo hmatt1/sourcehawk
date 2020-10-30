@@ -17,7 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor(staticName = "coordinates")
 public class MavenParentEquals extends AbstractMavenModelEnforcer {
 
-    public static final String PARENT = "parent";
+    private static final String PARENT = "parent";
 
     /**
      * The expected maven coordinates ID of the parent.  Maven groupId and artifactId are required
@@ -60,48 +60,46 @@ public class MavenParentEquals extends AbstractMavenModelEnforcer {
         return enforce(expectedCoordinatesArray, model);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String getMavenModelType() {
         return PARENT;
     }
 
+    /** {@inheritDoc} */
     @Override
-    protected String getArtifactId(Model model) {
-        if (model == null) {
-            return null;
-        }
-        return Optional.ofNullable(model.getParent())
+    protected String getArtifactId(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getParent)
                 .map(Parent::getArtifactId)
                 .orElse(null);
     }
 
+    /** {@inheritDoc} */
     @Override
-    protected String getGroupId(Model model) {
-        if (model == null || model.getParent() == null) {
-            return null;
-        }
-        return Optional.ofNullable(model.getParent())
+    protected String getGroupId(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getParent)
                 .map(Parent::getGroupId)
                 .orElse(null);
     }
 
+    /** {@inheritDoc} */
     @Override
-    protected String getVersion(Model model) {
-        if (model == null) {
-            return null;
-        }
-        return Optional.ofNullable(model.getParent())
+    protected String getVersion(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getParent)
                 .map(Parent::getVersion)
                 .orElse(null);
     }
 
+    /** {@inheritDoc} */
     @Override
-    protected String getId(Model model) {
-        if (model == null) {
-            return null;
-        }
-        return Optional.ofNullable(model.getParent())
+    protected String getId(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getParent)
                 .map(Parent::getId)
                 .orElse(null);
     }
+
 }

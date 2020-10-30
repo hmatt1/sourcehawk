@@ -1,7 +1,7 @@
 package com.optum.sourcehawk.enforcer.file.maven;
 
-import com.optum.sourcehawk.enforcer.file.AbstractFileEnforcer;
 import com.optum.sourcehawk.enforcer.EnforcerResult;
+import com.optum.sourcehawk.enforcer.file.AbstractFileEnforcer;
 import lombok.val;
 import org.apache.maven.model.Model;
 
@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public abstract class AbstractMavenModelEnforcer extends AbstractFileEnforcer {
 
+    protected static final String WILDCARD = "*";
     protected static final String EXPECTED_FORMAT_ERROR = "The expectedCoordinates is improperly formatted, should be in format groupId:artifactId[:version]";
     protected static final String PARSE_ERROR = "Maven pom.xml parsing resulted in error";
     protected static final String MISSING_DECLARATION_ERROR = "Maven pom.xml is missing <%s> declaration";
@@ -18,7 +19,7 @@ public abstract class AbstractMavenModelEnforcer extends AbstractFileEnforcer {
     protected static final String INCORRECT_VERSION_ERROR = "Maven <%s> [%s] version [%s] does not equal or match [%s]";
 
     /**
-     * Get the model type to validation; parent, depedendency, etc
+     * Get the model type to validation; parent, dependency, etc
      *
      * @return Name of the model type
      */
@@ -58,7 +59,7 @@ public abstract class AbstractMavenModelEnforcer extends AbstractFileEnforcer {
      * Enforce the model is as expected
      *
      * @param expectedCoordinatesArray the array of expected coordinates
-     * @param model                    the maven model
+     * @param model the maven model
      * @return the enforcer result
      */
     protected EnforcerResult enforce(final String[] expectedCoordinatesArray, final Model model) {
@@ -68,14 +69,17 @@ public abstract class AbstractMavenModelEnforcer extends AbstractFileEnforcer {
                 .filter(coordinates -> coordinates.length == 3)
                 .map(coordinates -> coordinates[2]);
         val failedMessages = new ArrayList<String>();
-        if (!expectedGroupId.equals(getGroupId(model))) {
+        if (!WILDCARD.equals(expectedGroupId) && !expectedGroupId.equals(getGroupId(model))) {
             failedMessages.add(String.format(INCORRECT_GROUP_ID_ERROR, getMavenModelType(), getGroupId(model), expectedGroupId));
         }
-        if (!expectedArtifactId.equals(getArtifactId(model))) {
+        if (!WILDCARD.equals(expectedArtifactId) && !expectedArtifactId.equals(getArtifactId(model))) {
             failedMessages.add(String.format(INCORRECT_ARTIFACT_ID_ERROR, getMavenModelType(), getArtifactId(model), expectedArtifactId));
         }
-        if (expectedVersionOptional.isPresent() && !(expectedVersionOptional.get().equals(getVersion(model)) || getVersion(model).matches(expectedVersionOptional.get()))) {
-            failedMessages.add(String.format(INCORRECT_VERSION_ERROR, getMavenModelType(), getId(model), getVersion(model), expectedVersionOptional.get()));
+        if (expectedVersionOptional.isPresent()) {
+            val expectedVersion = expectedVersionOptional.get();
+            if (!WILDCARD.equals(expectedVersion) && !(expectedVersion.equals(getVersion(model)) || getVersion(model).matches(expectedVersion))) {
+                failedMessages.add(String.format(INCORRECT_VERSION_ERROR, getMavenModelType(), getId(model), getVersion(model), expectedVersionOptional.get()));
+            }
         }
         if (failedMessages.isEmpty()) {
             return EnforcerResult.passed();
@@ -85,4 +89,5 @@ public abstract class AbstractMavenModelEnforcer extends AbstractFileEnforcer {
                 .messages(failedMessages)
                 .build();
     }
+
 }

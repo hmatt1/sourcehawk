@@ -1,5 +1,6 @@
 package com.optum.sourcehawk.enforcer.file.maven;
 
+import com.optum.sourcehawk.core.utils.CollectionUtils;
 import com.optum.sourcehawk.enforcer.EnforcerResult;
 import com.optum.sourcehawk.enforcer.file.maven.utils.MavenPomParser;
 import lombok.AllArgsConstructor;
@@ -11,8 +12,9 @@ import org.apache.maven.model.Plugin;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Optional;
 
 /**
  * An enforcer which enforces that the coordinates of the maven plugins are as expected
@@ -20,7 +22,7 @@ import java.util.function.Predicate;
 @AllArgsConstructor(staticName = "coordinates")
 public class MavenPlugins extends AbstractMavenModelEnforcer {
 
-    public static final String PLUGIN = "plugin";
+    private static final String PLUGIN = "plugin";
 
     /**
      * The expected maven coordinates ID of expected plugins.  Maven groupId and artifactId are required
@@ -42,70 +44,98 @@ public class MavenPlugins extends AbstractMavenModelEnforcer {
         return MavenPomParser.parse(actualFileInputStream)
                 .map(Model::getBuild)
                 .map(Build::getPlugins)
-                .map(this::enforcePlugins)
+                .map(this::enforceInternal)
                 .orElseGet(() -> EnforcerResult.failed(PARSE_ERROR));
     }
 
-    private EnforcerResult enforcePlugins(List<Plugin> plugins) {
+    /**
+     * Enforce the plugins are as expected
+     *
+     * @param plugins the plugins to enforce
+     * @return the enforcer result
+     */
+    private EnforcerResult enforceInternal(final Collection<Plugin> plugins) {
         if (expectedCoordinates.isEmpty()) {
             return EnforcerResult.passed();
         }
-        if (plugins == null || plugins.isEmpty()) {
+        if (CollectionUtils.isEmpty(plugins)) {
             return EnforcerResult.failed(String.format(MISSING_DECLARATION_ERROR, getMavenModelType()));
         }
         return expectedCoordinates.stream()
-                .map(expectedCoordinate -> {
-                    val expectedCoordinatesArray = expectedCoordinate.split(":");
-                    if (expectedCoordinatesArray.length < 2) {
-                        return EnforcerResult.failed(EXPECTED_FORMAT_ERROR);
-                    }
-                    return plugins
-                            .stream()
-                            .filter(matchCoordinates(expectedCoordinatesArray))
-                            .findFirst()
-                            .map(this::buildModelFromPlugin)
-                            .map(s -> enforce(expectedCoordinatesArray, s))
-                            .orElseGet(() -> EnforcerResult.failed(String.format(MISSING_DECLARATION_ERROR, expectedCoordinate)));
-
-                })
+                .map(expectedCoordinate -> enforcePluginCoordinates(plugins, expectedCoordinate))
                 .reduce(EnforcerResult.passed(), EnforcerResult::reduce);
     }
 
-    private Model buildModelFromPlugin(Plugin plugin) {
-        Model model = new Model();
+    /**
+     * Enforce that the expected coordinates exist amongst all the plugins
+     *
+     * @param plugins the plugins to check
+     * @param expectedCoordinates the plugin's expected coordinates
+     * @return the enforcer result
+     */
+    private EnforcerResult enforcePluginCoordinates(final Collection<Plugin> plugins, final String expectedCoordinates) {
+        val expectedCoordinatesArray = expectedCoordinates.split(":");
+        if (expectedCoordinatesArray.length < 2) {
+            return EnforcerResult.failed(EXPECTED_FORMAT_ERROR);
+        }
+        return plugins.stream()
+                .filter(plugin -> plugin.getArtifactId().equalsIgnoreCase(expectedCoordinatesArray[1]) && plugin.getGroupId().equalsIgnoreCase(expectedCoordinatesArray[0]))
+                .findFirst()
+                .map(MavenPlugins::buildModelFromPlugin)
+                .map(pluginModel -> enforce(expectedCoordinatesArray, pluginModel))
+                .orElseGet(() -> EnforcerResult.failed(String.format(MISSING_DECLARATION_ERROR, expectedCoordinates)));
+    }
+
+    /**
+     * Build a {@link Model} from the provided {@link Plugin}
+     *
+     * @param plugin the plugin to build model for
+     * @return the built model
+     */
+    private static Model buildModelFromPlugin(final Plugin plugin) {
+        val model = new Model();
         model.setArtifactId(plugin.getArtifactId());
         model.setGroupId(plugin.getGroupId());
         model.setVersion(plugin.getVersion());
         return model;
     }
 
-    private Predicate<Plugin> matchCoordinates(String[] expectedCoordinatesArray) {
-        return (Plugin s) -> s.getArtifactId().equalsIgnoreCase(expectedCoordinatesArray[1])
-                && s.getGroupId().equalsIgnoreCase(expectedCoordinatesArray[0]);
-    }
-
+    /** {@inheritDoc} */
     @Override
     protected String getMavenModelType() {
         return PLUGIN;
     }
 
+    /** {@inheritDoc} */
     @Override
-    protected String getArtifactId(Model model) {
-        return model.getArtifactId();
+    protected String getArtifactId(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getArtifactId)
+                .orElse(null);
     }
 
+    /** {@inheritDoc} */
     @Override
-    protected String getGroupId(Model model) {
-        return model.getGroupId();
+    protected String getGroupId(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getGroupId)
+                .orElse(null);
     }
 
+    /** {@inheritDoc} */
     @Override
-    protected String getVersion(Model model) {
-        return model.getVersion();
+    protected String getVersion(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getVersion)
+                .orElse(null);
     }
 
+    /** {@inheritDoc} */
     @Override
-    protected String getId(Model model) {
-        return model.getId();
+    protected String getId(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getId)
+                .orElse(null);
     }
+
 }

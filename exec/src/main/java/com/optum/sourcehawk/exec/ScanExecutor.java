@@ -4,6 +4,7 @@ import com.optum.sourcehawk.configuration.SourcehawkConfiguration;
 import com.optum.sourcehawk.core.repository.LocalRepositoryFileReader;
 import com.optum.sourcehawk.core.repository.RepositoryFileReader;
 import com.optum.sourcehawk.core.scan.ScanResult;
+import com.optum.sourcehawk.core.utils.FileUtils;
 import com.optum.sourcehawk.enforcer.file.FileEnforcer;
 import com.optum.sourcehawk.protocol.FileProtocol;
 import lombok.AccessLevel;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -51,11 +53,16 @@ public final class ScanExecutor {
         val fileProtocolScanResults = new ArrayList<ScanResult>(filteredFileProtocols.size());
         for (val fileProtocol : filteredFileProtocols) {
             if (fileProtocol.getEnforcers() == null || fileProtocol.getEnforcers().isEmpty()) {
-                fileProtocolScanResults.add(enforceFileExists(repositoryFileReader, fileProtocol));
+                if (FileUtils.isGlobPattern(fileProtocol.getRepositoryPath())) {
+                    val message = "Error enforcing file protocol: glob patterns can only be used when there is at least one enforcer";
+                    fileProtocolScanResults.add(ScanResultFactory.error(fileProtocol.getRepositoryPath(), message));
+                } else {
+                    fileProtocolScanResults.add(enforceFileExists(repositoryFileReader, fileProtocol));
+                }
                 continue;
             }
             try {
-                fileProtocolScanResults.add(enforceFileProtocol(repositoryFileReader, fileProtocol));
+                fileProtocolScanResults.add(enforceFileProtocol(execOptions.getRepositoryRoot(), repositoryFileReader, fileProtocol));
             } catch (final IOException e) {
                 val message = String.format("Error enforcing file protocol: %s", e.getMessage());
                 fileProtocolScanResults.add(ScanResultFactory.error(fileProtocol.getRepositoryPath(), message));
@@ -86,12 +93,13 @@ public final class ScanExecutor {
     /**
      * Enforce the file protocol
      *
+     * @param repositoryRoot the repository root
      * @param repositoryFileReader the repository file reader
      * @param fileProtocol         the file protocol
      * @return the scan result
      * @throws IOException if any error occurs during file processing
      */
-    private static ScanResult enforceFileProtocol(final RepositoryFileReader repositoryFileReader, final FileProtocol fileProtocol) throws IOException {
+    private static ScanResult enforceFileProtocol(final Path repositoryRoot, final RepositoryFileReader repositoryFileReader, final FileProtocol fileProtocol) throws IOException {
         val fileProtocolScanResults = new ArrayList<ScanResult>(fileProtocol.getEnforcers().size());
         for (val enforcer : fileProtocol.getEnforcers()) {
             final FileEnforcer fileEnforcer;
@@ -101,14 +109,20 @@ public final class ScanExecutor {
                 fileProtocolScanResults.add(ScanResultFactory.error(fileProtocol.getRepositoryPath(), String.format("File enforcer invalid: %s", e.getMessage())));
                 continue;
             }
-            val fileInputStreamOptional = repositoryFileReader.read(fileProtocol.getRepositoryPath());
-            if (fileInputStreamOptional.isPresent()) {
-                try (val fileInputStream = fileInputStreamOptional.get()) {
-                    val enforcerResult = fileEnforcer.enforce(fileInputStream);
-                    fileProtocolScanResults.add(ScanResultFactory.enforcerResult(fileProtocol, enforcerResult));
-                }
-            } else {
+            val filePaths = FileUtils.find(repositoryRoot.toString(), fileProtocol.getRepositoryPath())
+                    .map(Path::toAbsolutePath)
+                    .map(Path::toString)
+                    .map(absoluteRepositoryFilePath -> FileUtils.deriveRelativePath(repositoryRoot.toString(), absoluteRepositoryFilePath))
+                    .collect(Collectors.toSet());
+            if (filePaths.isEmpty()) {
                 fileProtocolScanResults.add(ScanResultFactory.fileNotFound(fileProtocol));
+            } else {
+                for (val repositoryFilePath: filePaths) {
+                    try (val fileInputStream = repositoryFileReader.read(repositoryFilePath).get()) { // TODO: remove Optional ??
+                        val enforcerResult = fileEnforcer.enforce(fileInputStream);
+                        fileProtocolScanResults.add(ScanResultFactory.enforcerResult(repositoryFilePath, fileProtocol, enforcerResult));
+                    }
+                }
             }
         }
         return fileProtocolScanResults.stream()

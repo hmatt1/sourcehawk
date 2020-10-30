@@ -6,7 +6,7 @@ file-protocols:
     tags:
       - lombok
       - config
-    repository-path: file-does-not-exist
+    repository-path: file-does-not.exist
     required: true
     severity: WARNING
     enforcers:
