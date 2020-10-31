@@ -11,7 +11,5 @@ file-protocols:
       - enforcer: .maven.MavenParentEquals
         expected-coordinates: com.optum.sourcehawk:sourcehawk-jar-parent
 
-
-# Composable recursive source hawk configs (Must be public repo)
 config-locations:
-  - .test/sourcehawk-bad-parent-example.yml
+  - .test/bad-parent-2.yml

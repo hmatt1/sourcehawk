@@ -44,7 +44,7 @@ public class ContentEquals extends AbstractFileEnforcer {
      *
      * @param expectedReader the expected buffered reader
      * @param actualReader the actual buffered reader
-     * @return true if the identica, false otherwise
+     * @return true if content is identical, false otherwise
      * @throws IOException if any error occurs reading files
      */
     private static boolean equals(final BufferedReader expectedReader, final BufferedReader actualReader) throws IOException {

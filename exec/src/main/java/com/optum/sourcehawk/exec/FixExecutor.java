@@ -61,6 +61,7 @@ public final class FixExecutor {
                 .filter(FileProtocol::isRequired)
                 .collect(Collectors.toSet());
         val fileProtocolFixResults = new ArrayList<FixResult>(filteredFileProtocols.size());
+        // TODO: glob
         for (val fileProtocol : filteredFileProtocols) {
             try (val stringWriter = new StringWriter()) {
                 val fixResult = fixFileProtocol(repositoryFileReader, fileProtocol, stringWriter, dryRun);

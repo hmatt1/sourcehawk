@@ -39,7 +39,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk/override.yml").toString())
+                .configurationFileLocation(repositoryRoot.resolve(".test/override.yml").toString())
                 .build()
 
         when:
@@ -54,7 +54,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(repositoryRoot.resolve(".test/sourcehawk-glob-example.yml").toString())
+                .configurationFileLocation(repositoryRoot.resolve(".test/glob-example.yml").toString())
                 .build()
 
         when:
@@ -69,7 +69,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk/bad-url.yml").toString())
+                .configurationFileLocation(repositoryRoot.resolve(".test/bad-url.yml").toString())
                 .build()
 
         when:
@@ -84,7 +84,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
-                .configurationFileLocation(repositoryRoot.resolve(".sourcehawk/local.yml").toString())
+                .configurationFileLocation(repositoryRoot.resolve(".test/local.yml").toString())
                 .build()
 
         when:

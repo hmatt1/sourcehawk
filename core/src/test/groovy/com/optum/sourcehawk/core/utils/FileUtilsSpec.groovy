@@ -34,11 +34,11 @@ class FileUtilsSpec extends Specification {
 
     def "find - glob pattern no file extension (found - results)"() {
         when:
-        Collection<Path> paths = FileUtils.find(testResourcesRoot.toAbsolutePath().toString(), "**/glob/Dockerfile").collect()
+        Collection<Path> paths = FileUtils.find(testResourcesRoot.toAbsolutePath().toString(), "**/Dockerfile").collect()
 
         then:
         paths
-        paths.size() == 1
+        paths.size() == 2
     }
 
     def "find - glob pattern (not found - no results)"() {
