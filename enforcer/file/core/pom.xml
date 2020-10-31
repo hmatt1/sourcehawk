@@ -14,6 +14,7 @@
 
     <artifactId>sourcehawk-enforcer-file-core</artifactId>
     <name>Sourcehawk Enforcer File Core</name>
+    <description>Sourcehawk core file enforcer utilities and functionality</description>
     <packaging>jar</packaging>
 
     <dependencies>

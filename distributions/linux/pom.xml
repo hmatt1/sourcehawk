@@ -14,6 +14,7 @@
 
     <artifactId>sourcehawk-dist-linux</artifactId>
     <name>Sourcehawk Distributions Linux</name>
+    <description>Sourcehawk linux executable</description>
     <packaging>pom</packaging>
 
     <dependencies>

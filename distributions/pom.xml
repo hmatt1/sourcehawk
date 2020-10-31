@@ -14,6 +14,7 @@
 
     <artifactId>sourcehawk-dist</artifactId>
     <name>Sourcehawk Distributions</name>
+    <description>Sourcehawk distributions for different platforms and technologies</description>
     <packaging>pom</packaging>
 
     <properties>

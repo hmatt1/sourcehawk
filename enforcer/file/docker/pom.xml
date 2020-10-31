@@ -14,6 +14,7 @@
 
     <artifactId>sourcehawk-enforcer-file-docker</artifactId>
     <name>Sourcehawk Enforcer File Docker</name>
+    <description>Sourcehawk Docker file enforcers</description>
     <packaging>jar</packaging>
 
     <dependencies>

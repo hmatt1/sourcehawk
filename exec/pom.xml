@@ -14,6 +14,7 @@
 
     <artifactId>sourcehawk-exec</artifactId>
     <name>Sourcehawk Exec</name>
+    <description>Sourcehawk exec, entrypoint into CLI application</description>
     <packaging>jar</packaging>
 
     <properties>

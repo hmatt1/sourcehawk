@@ -14,6 +14,7 @@
 
     <artifactId>sourcehawk-dist-native-image-parent</artifactId>
     <name>Sourcehawk Distributions Native Image Parent</name>
+    <description>Sourcehawk native image parent pom inheritance for distributions which build native imagess</description>
     <packaging>pom</packaging>
 
     <properties>

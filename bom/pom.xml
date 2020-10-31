@@ -13,6 +13,7 @@
 
     <artifactId>sourcehawk-bom</artifactId>
     <name>Sourcehawk BOM</name>
+    <description>Sourcehawk Bill of Materials</description>
     <packaging>pom</packaging>
 
     <properties>

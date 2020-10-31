@@ -14,6 +14,7 @@
 
     <artifactId>sourcehawk-enforcer-file-common</artifactId>
     <name>Sourcehawk Enforcer File Common</name>
+    <description>Sourcehawk common enforcers</description>
     <packaging>jar</packaging>
 
     <dependencies>

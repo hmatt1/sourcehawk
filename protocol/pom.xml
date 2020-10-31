@@ -15,6 +15,7 @@
 
     <artifactId>sourcehawk-protocol</artifactId>
     <name>Sourcehawk Protocol</name>
+    <description>Sourcehawk protocol definition</description>
     <packaging>pom</packaging>
 
     <modules>

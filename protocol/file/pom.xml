@@ -14,6 +14,7 @@
 
     <artifactId>sourcehawk-protocol-file</artifactId>
     <name>Sourcehawk Protocol File</name>
+    <description>Sourcehawk file protocol definition</description>
     <packaging>jar</packaging>
 
     <dependencies>

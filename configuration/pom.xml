@@ -13,6 +13,7 @@
 
     <artifactId>sourcehawk-configuration</artifactId>
     <name>Sourcehawk Configuration</name>
+    <description>Sourcehawk configuration objects</description>
     <packaging>jar</packaging>
 
     <dependencies>

@@ -14,6 +14,7 @@
 
     <artifactId>sourcehawk-enforcer-file</artifactId>
     <name>Sourcehawk Enforcer File</name>
+    <description>Sourcehawk file enforcers</description>
     <packaging>pom</packaging>
 
     <modules>
