@@ -19,7 +19,7 @@
 
     <properties>
         <executable.name>${global.project.name}</executable.name>
-        <docker.namespace>optumopensource</docker.namespace> <!-- TODO: update to "optum" once procured -->
+        <docker.namespace>optumopensource</docker.namespace>
         <docker.repository>${docker.namespace}/${executable.name}</docker.repository>
     </properties>
 

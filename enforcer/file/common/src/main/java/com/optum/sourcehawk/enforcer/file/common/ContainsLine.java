@@ -1,8 +1,8 @@
 package com.optum.sourcehawk.enforcer.file.common;
 
 import com.optum.sourcehawk.core.utils.StringUtils;
-import com.optum.sourcehawk.enforcer.file.AbstractFileEnforcer;
 import com.optum.sourcehawk.enforcer.EnforcerResult;
+import com.optum.sourcehawk.enforcer.file.AbstractFileEnforcer;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.val;

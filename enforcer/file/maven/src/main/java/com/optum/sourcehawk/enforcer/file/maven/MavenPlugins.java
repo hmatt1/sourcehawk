@@ -40,7 +40,7 @@ public class MavenPlugins extends AbstractMavenModelEnforcer {
      * {@inheritDoc}
      */
     @Override
-    protected EnforcerResult enforceInternal(@NonNull final InputStream actualFileInputStream) throws IOException {
+    protected EnforcerResult enforceInternal(@NonNull final InputStream actualFileInputStream) {
         return MavenPomParser.parse(actualFileInputStream)
                 .map(Model::getBuild)
                 .map(Build::getPlugins)

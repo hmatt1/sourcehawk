@@ -1,7 +1,7 @@
 package com.optum.sourcehawk.enforcer.file.maven;
 
-import com.optum.sourcehawk.enforcer.file.AbstractFileEnforcer;
 import com.optum.sourcehawk.enforcer.EnforcerResult;
+import com.optum.sourcehawk.enforcer.file.AbstractFileEnforcer;
 import com.optum.sourcehawk.enforcer.file.maven.utils.MavenPomParser;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;

@@ -2,7 +2,6 @@ package com.optum.sourcehawk.enforcer.file;
 
 import com.optum.sourcehawk.enforcer.Resolver;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 

@@ -9,7 +9,6 @@ import lombok.val;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +38,7 @@ public class MavenDependencies extends AbstractMavenModelEnforcer {
      * {@inheritDoc}
      */
     @Override
-    protected EnforcerResult enforceInternal(@NonNull final InputStream actualFileInputStream) throws IOException {
+    protected EnforcerResult enforceInternal(@NonNull final InputStream actualFileInputStream) {
         return MavenPomParser.parse(actualFileInputStream)
                 .map(Model::getDependencies)
                 .map(this::enforceInternal)
@@ -102,38 +101,6 @@ public class MavenDependencies extends AbstractMavenModelEnforcer {
     @Override
     protected String getMavenModelType() {
         return DEPENDENCY;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getArtifactId(final Model model) {
-        return Optional.ofNullable(model)
-                .map(Model::getArtifactId)
-                .orElse(null);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getGroupId(final Model model) {
-        return Optional.ofNullable(model)
-                .map(Model::getGroupId)
-                .orElse(null);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getVersion(final Model model) {
-        return Optional.ofNullable(model)
-                .map(Model::getVersion)
-                .orElse(null);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getId(final Model model) {
-        return Optional.ofNullable(model)
-                .map(Model::getId)
-                .orElse(null);
     }
 
 }

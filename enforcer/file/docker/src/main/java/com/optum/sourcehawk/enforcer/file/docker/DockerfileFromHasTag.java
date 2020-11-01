@@ -1,8 +1,8 @@
 package com.optum.sourcehawk.enforcer.file.docker;
 
 import com.optum.sourcehawk.core.utils.StringUtils;
-import com.optum.sourcehawk.enforcer.file.AbstractFileEnforcer;
 import com.optum.sourcehawk.enforcer.EnforcerResult;
+import com.optum.sourcehawk.enforcer.file.AbstractFileEnforcer;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.val;
@@ -37,23 +37,33 @@ public class DockerfileFromHasTag extends AbstractFileEnforcer {
         try (val dockerfileReader = new BufferedReader(new InputStreamReader(actualFileInputStream))) {
             String line;
             while ((line = dockerfileReader.readLine()) != null) {
-                if (line.startsWith(FROM_TOKEN)) {
-                    val actualFrom = line.substring(FROM_TOKEN.length());
-                    if (actualFrom.contains(":")) {
-                        val fromPieces = actualFrom.split(":");
-                        if (fromPieces.length == 2) {
-                            val tag = fromPieces[1];
-                            if (StringUtils.equals(tag, TAG_LATEST) && !allowLatest) {
-                                return EnforcerResult.failed(LATEST_TAG_MESSAGE);
-                            }
-                            return EnforcerResult.passed();
-                        }
-                    }
-                    return EnforcerResult.failed(MISSING_TAG_MESSAGE);
+                if (!line.startsWith(FROM_TOKEN)) {
+                    continue;
                 }
+                return enforceFromTag(line.substring(FROM_TOKEN.length()));
             }
         }
         return EnforcerResult.failed(MISSING_FROM_MESSAGE);
+    }
+
+    /**
+     * Enforce the FROM tag is as expected
+     *
+     * @param fromValue the from value
+     * @return the enforcer result
+     */
+    private EnforcerResult enforceFromTag(final String fromValue) {
+        if (fromValue.contains(":")) {
+            val fromPieces = fromValue.split(":");
+            if (fromPieces.length == 2) {
+                val tag = fromPieces[1];
+                if (StringUtils.equals(tag, TAG_LATEST) && !allowLatest) {
+                    return EnforcerResult.failed(LATEST_TAG_MESSAGE);
+                }
+                return EnforcerResult.passed();
+            }
+        }
+        return EnforcerResult.failed(MISSING_TAG_MESSAGE);
     }
 
 }

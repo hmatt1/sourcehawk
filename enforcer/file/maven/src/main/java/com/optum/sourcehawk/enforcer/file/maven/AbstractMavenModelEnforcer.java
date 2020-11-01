@@ -31,7 +31,11 @@ public abstract class AbstractMavenModelEnforcer extends AbstractFileEnforcer {
      * @param model The maven model
      * @return Name of the artifact
      */
-    protected abstract String getArtifactId(Model model);
+    protected String getArtifactId(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getArtifactId)
+                .orElse(null);
+    }
 
     /**
      * Get the group id for the model.
@@ -39,7 +43,11 @@ public abstract class AbstractMavenModelEnforcer extends AbstractFileEnforcer {
      * @param model The maven model
      * @return Name of the group
      */
-    protected abstract String getGroupId(Model model);
+    protected String getGroupId(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getGroupId)
+                .orElse(null);
+    }
 
     /**
      * Get the version for the model.
@@ -47,13 +55,23 @@ public abstract class AbstractMavenModelEnforcer extends AbstractFileEnforcer {
      * @param model The maven model
      * @return Version of the artifact
      */
-    protected abstract String getVersion(Model model);
+    protected String getVersion(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getVersion)
+                .orElse(null);
+    }
 
     /**
-     * @param model The model to calculate the id for
+     * Get the ID of the model
+     *
+     * @param model the model to calculate the id for
      * @return the model id as <code>groupId:artifactId:packaging:version</code>
      */
-    protected abstract String getId(Model model);
+    protected String getId(final Model model) {
+        return Optional.ofNullable(model)
+                .map(Model::getId)
+                .orElse(null);
+    }
 
     /**
      * Enforce the model is as expected

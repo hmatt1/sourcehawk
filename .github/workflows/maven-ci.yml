@@ -87,11 +87,7 @@ jobs:
       - name: Analyze with SonarCloud
         if: success() && (github.event_name == 'push' && matrix.java == '11')
         continue-on-error: true
-        run: |
-          ./mvnw --batch-mode sonar:sonar -Dsonar.login=$SONAR_TOKEN \
-            -Dsonar.junit.reportPaths=**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml,**/target/invoker-reports/BUILD-*.xml \
-            -Dsonar.java.checkstyle.reportPaths=**/target/checkstyle-result.xml \
-            -Dsonar.coverage.jacoco.xmlReportPaths=**/target/site/jacoco/jacoco.xml
+        run: ./mvnw --batch-mode sonar:sonar -Dsonar.login=$SONAR_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
@@ -155,7 +151,7 @@ jobs:
         shell: cmd
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          ./graalvm-ce-java11-20.1.0/bin/native-image -cp build/native-image.jar -H:+ReportExceptionStackTraces --report-unsupported-elements-at-runtime
+          graalvm-ce-java11-20.1.0\bin\native-image -cp .\build\native-image.jar -H:+ReportExceptionStackTraces --report-unsupported-elements-at-runtime
         env:
           JAVA_HOME: ./graalvm-ce-java8-20.1.0
       - name: Archive Windows Native Image

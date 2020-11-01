@@ -61,7 +61,6 @@ public final class FixExecutor {
                 .filter(FileProtocol::isRequired)
                 .collect(Collectors.toSet());
         val fileProtocolFixResults = new ArrayList<FixResult>(filteredFileProtocols.size());
-        // TODO: glob
         for (val fileProtocol : filteredFileProtocols) {
             try (val stringWriter = new StringWriter()) {
                 val fixResult = fixFileProtocol(repositoryFileReader, fileProtocol, stringWriter, dryRun);
@@ -100,6 +99,7 @@ public final class FixExecutor {
                 return FixResultFactory.error(fileProtocol.getRepositoryPath(), String.format("File enforcer invalid: %s", e.getMessage()));
             }
             if (fileResolverOptional.isPresent()) {
+                // TODO: handle glob patterns
                 val fileInputStreamOptional = repositoryFileReader.read(fileProtocol.getRepositoryPath());
                 if (fileInputStreamOptional.isPresent()) {
                     try (val fileInputStream = fileInputStreamOptional.get()) {

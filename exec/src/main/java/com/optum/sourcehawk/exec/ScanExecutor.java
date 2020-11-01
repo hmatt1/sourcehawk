@@ -35,7 +35,7 @@ public final class ScanExecutor {
     public static ScanResult scan(final ExecOptions execOptions) {
         return ConfigurationReader.readConfiguration(execOptions.getRepositoryRoot(), execOptions.getConfigurationFileLocation())
                 .map(sourcehawkConfiguration -> executeScan(execOptions, sourcehawkConfiguration))
-                .orElseGet(() -> ScanResultFactory.error(execOptions.getConfigurationFileLocation().toString(), "Configuration file not found"));
+                .orElseGet(() -> ScanResultFactory.error(execOptions.getConfigurationFileLocation(), "Configuration file not found"));
     }
 
     /**
@@ -109,16 +109,16 @@ public final class ScanExecutor {
                 fileProtocolScanResults.add(ScanResultFactory.error(fileProtocol.getRepositoryPath(), String.format("File enforcer invalid: %s", e.getMessage())));
                 continue;
             }
-            val filePaths = FileUtils.find(execOptions.getRepositoryRoot().toString(), fileProtocol.getRepositoryPath())
+            val repositoryPaths = FileUtils.find(execOptions.getRepositoryRoot().toString(), fileProtocol.getRepositoryPath())
                     .map(Path::toAbsolutePath)
                     .map(Path::toString)
                     .map(absoluteRepositoryFilePath -> FileUtils.deriveRelativePath(execOptions.getRepositoryRoot().toString(), absoluteRepositoryFilePath))
                     .collect(Collectors.toSet());
-            if (filePaths.isEmpty()) {
+            if (repositoryPaths.isEmpty()) {
                 fileProtocolScanResults.add(ScanResultFactory.fileNotFound(fileProtocol));
             } else {
-                for (val repositoryFilePath: filePaths) {
-                    try (val fileInputStream = repositoryFileReader.read(repositoryFilePath).get()) { // TODO: remove Optional ??
+                for (val repositoryPath: repositoryPaths) {
+                    try (val fileInputStream = repositoryFileReader.read(repositoryPath).orElseThrow(() -> new IOException("File not found"))) {
                         val enforcerResult = fileEnforcer.enforce(fileInputStream);
                         fileProtocolScanResults.add(ScanResultFactory.enforcerResult(execOptions, fileProtocol, enforcerResult));
                     }
