@@ -18,10 +18,6 @@ WORKDIR ${WORKDIR}
 # Build the native image
 RUN native-image -cp native-image.jar \
     -H:+ReportExceptionStackTraces \
-    -H:Name=${NAME} \
     --report-unsupported-elements-at-runtime \
-    --enable-http \
-    --enable-https \
-    --no-server \
     --no-fallback \
     --static
