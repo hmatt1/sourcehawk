@@ -197,6 +197,43 @@ class ScanExecutorSpec extends FileBaseSpecification {
         noExceptionThrown()
     }
 
+    def "scan - enforcer has failed result (only warning)"() {
+        given:
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(repositoryRoot)
+                .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-failed-enforcer-only-warning.yml").toString())
+                .failOnWarnings(true)
+                .build()
+
+        when:
+        ScanResult scanResult = ScanExecutor.scan(execOptions)
+
+        then:
+        scanResult
+        !scanResult.passed
+
+        and:
+        noExceptionThrown()
+    }
+
+    def "scan - enforcer has passed result (only warning)"() {
+        given:
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(repositoryRoot)
+                .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-failed-enforcer-only-warning.yml").toString())
+                .build()
+
+        when:
+        ScanResult scanResult = ScanExecutor.scan(execOptions)
+
+        then:
+        scanResult
+        scanResult.passed
+
+        and:
+        noExceptionThrown()
+    }
+
     def "scan - bad path for file"() {
         given:
         ExecOptions execOptions = ExecOptions.builder()
@@ -240,6 +277,9 @@ class ScanExecutorSpec extends FileBaseSpecification {
 
     def "enforceFileProtocol - enforcer conversion error"() {
         given:
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(repositoryRoot)
+                .build()
         RepositoryFileReader mockRepositoryFileReader = Mock()
         FileProtocol fileProtocol = FileProtocol.builder()
                 .name("bicycle")
@@ -249,7 +289,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
                 .build()
 
         when:
-        ScanResult scanResult = ScanExecutor.enforceFileProtocol(repositoryRoot, mockRepositoryFileReader, fileProtocol)
+        ScanResult scanResult = ScanExecutor.enforceFileProtocol(execOptions, mockRepositoryFileReader, fileProtocol)
 
         then:
         0 * _

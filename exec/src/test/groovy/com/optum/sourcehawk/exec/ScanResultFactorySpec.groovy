@@ -6,10 +6,15 @@ import com.optum.sourcehawk.enforcer.EnforcerResult
 import com.optum.sourcehawk.enforcer.file.common.StringPropertyEquals
 import com.optum.sourcehawk.protocol.FileProtocol
 
+import java.nio.file.Paths
+
 class ScanResultFactorySpec extends FileBaseSpecification {
 
     def "enforcerResult - passed"() {
         given:
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(repositoryRoot)
+                .build()
         Map<String, Object> enforcers = [
                 "path/file.ext": StringPropertyEquals.equals("key", "value")
         ]
@@ -21,7 +26,7 @@ class ScanResultFactorySpec extends FileBaseSpecification {
         EnforcerResult enforcerResult = EnforcerResult.passed()
 
         when:
-        ScanResult scanResult = ScanResultFactory.enforcerResult(repositoryRoot.toString(), fileProtocol, enforcerResult)
+        ScanResult scanResult = ScanResultFactory.enforcerResult(execOptions, fileProtocol, enforcerResult)
 
         then:
         scanResult
@@ -42,10 +47,13 @@ class ScanResultFactorySpec extends FileBaseSpecification {
                 .name("protocol")
                 .enforcers([ enforcers ])
                 .build()
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(Paths.get(fileProtocol.repositoryPath))
+                .build()
         EnforcerResult enforcerResult = EnforcerResult.failed("Property [key] is null")
 
         when:
-        ScanResult scanResult = ScanResultFactory.enforcerResult(fileProtocol.repositoryPath, fileProtocol, enforcerResult)
+        ScanResult scanResult = ScanResultFactory.enforcerResult(execOptions, fileProtocol, enforcerResult)
 
         then:
         scanResult
@@ -80,13 +88,60 @@ class ScanResultFactorySpec extends FileBaseSpecification {
                 .enforcers([ enforcers ])
                 .severity(Severity.WARNING.name())
                 .build()
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(Paths.get(fileProtocol.repositoryPath))
+                .failOnWarnings(true)
+                .build()
         EnforcerResult enforcerResult = EnforcerResult.builder()
-                .passed(true)
+                .passed(false)
                 .messages(["Property [key] is null"])
                 .build()
 
         when:
-        ScanResult scanResult = ScanResultFactory.enforcerResult(fileProtocol.repositoryPath, fileProtocol, enforcerResult)
+        ScanResult scanResult = ScanResultFactory.enforcerResult(execOptions, fileProtocol, enforcerResult)
+
+        then:
+        scanResult
+        !scanResult.passed
+        scanResult.warningCount == 1
+        scanResult.errorCount == 0
+        scanResult.messages.size() == 1
+        scanResult.messages[fileProtocol.repositoryPath]
+        scanResult.messages[fileProtocol.repositoryPath].size() == 1
+        scanResult.formattedMessages
+        scanResult.formattedMessages.size() == 1
+        scanResult.formattedMessages[0] == "[WARNING] path/file.ext :: Property [key] is null"
+
+        when:
+        ScanResult.MessageDescriptor messageDescriptor = scanResult.messages[fileProtocol.repositoryPath][0]
+
+        then:
+        messageDescriptor.repositoryPath == fileProtocol.repositoryPath
+        messageDescriptor.severity == fileProtocol.severity
+        messageDescriptor.message == enforcerResult.messages[0]
+    }
+
+    def "enforcerResult - passed (warning)"() {
+        given:
+        Map<String, Object> enforcers = [
+                "path/file.ext": StringPropertyEquals.equals("key", "value")
+        ]
+        FileProtocol fileProtocol = FileProtocol.builder()
+                .repositoryPath("path/file.ext")
+                .name("protocol")
+                .enforcers([ enforcers ])
+                .severity(Severity.WARNING.name())
+                .build()
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(Paths.get(fileProtocol.repositoryPath))
+                .build()
+        EnforcerResult enforcerResult = EnforcerResult.builder()
+                .passed(false)
+                .messages(["Property [key] is null"])
+                .build()
+
+        when:
+        ScanResult scanResult = ScanResultFactory.enforcerResult(execOptions, fileProtocol, enforcerResult)
 
         then:
         scanResult

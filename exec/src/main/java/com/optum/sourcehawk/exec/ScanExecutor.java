@@ -62,7 +62,7 @@ public final class ScanExecutor {
                 continue;
             }
             try {
-                fileProtocolScanResults.add(enforceFileProtocol(execOptions.getRepositoryRoot(), repositoryFileReader, fileProtocol));
+                fileProtocolScanResults.add(enforceFileProtocol(execOptions, repositoryFileReader, fileProtocol));
             } catch (final IOException e) {
                 val message = String.format("Error enforcing file protocol: %s", e.getMessage());
                 fileProtocolScanResults.add(ScanResultFactory.error(fileProtocol.getRepositoryPath(), message));
@@ -93,13 +93,13 @@ public final class ScanExecutor {
     /**
      * Enforce the file protocol
      *
-     * @param repositoryRoot the repository root
+     * @param execOptions the exec options
      * @param repositoryFileReader the repository file reader
      * @param fileProtocol         the file protocol
      * @return the scan result
      * @throws IOException if any error occurs during file processing
      */
-    private static ScanResult enforceFileProtocol(final Path repositoryRoot, final RepositoryFileReader repositoryFileReader, final FileProtocol fileProtocol) throws IOException {
+    private static ScanResult enforceFileProtocol(final ExecOptions execOptions, final RepositoryFileReader repositoryFileReader, final FileProtocol fileProtocol) throws IOException {
         val fileProtocolScanResults = new ArrayList<ScanResult>(fileProtocol.getEnforcers().size());
         for (val enforcer : fileProtocol.getEnforcers()) {
             final FileEnforcer fileEnforcer;
@@ -109,10 +109,10 @@ public final class ScanExecutor {
                 fileProtocolScanResults.add(ScanResultFactory.error(fileProtocol.getRepositoryPath(), String.format("File enforcer invalid: %s", e.getMessage())));
                 continue;
             }
-            val filePaths = FileUtils.find(repositoryRoot.toString(), fileProtocol.getRepositoryPath())
+            val filePaths = FileUtils.find(execOptions.getRepositoryRoot().toString(), fileProtocol.getRepositoryPath())
                     .map(Path::toAbsolutePath)
                     .map(Path::toString)
-                    .map(absoluteRepositoryFilePath -> FileUtils.deriveRelativePath(repositoryRoot.toString(), absoluteRepositoryFilePath))
+                    .map(absoluteRepositoryFilePath -> FileUtils.deriveRelativePath(execOptions.getRepositoryRoot().toString(), absoluteRepositoryFilePath))
                     .collect(Collectors.toSet());
             if (filePaths.isEmpty()) {
                 fileProtocolScanResults.add(ScanResultFactory.fileNotFound(fileProtocol));
@@ -120,7 +120,7 @@ public final class ScanExecutor {
                 for (val repositoryFilePath: filePaths) {
                     try (val fileInputStream = repositoryFileReader.read(repositoryFilePath).get()) { // TODO: remove Optional ??
                         val enforcerResult = fileEnforcer.enforce(fileInputStream);
-                        fileProtocolScanResults.add(ScanResultFactory.enforcerResult(repositoryFilePath, fileProtocol, enforcerResult));
+                        fileProtocolScanResults.add(ScanResultFactory.enforcerResult(execOptions, fileProtocol, enforcerResult));
                     }
                 }
             }

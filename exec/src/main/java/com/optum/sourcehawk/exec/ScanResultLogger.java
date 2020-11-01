@@ -49,7 +49,7 @@ class ScanResultLogger {
                     Sourcehawk.HIGHLIGHT_LOGGER.info(generateHeader());
                 }
                 if (execOptions.getVerbosity() == Verbosity.HIGH) {
-                    Sourcehawk.CONSOLE_RAW_LOGGER.info(formatexecOptions(execOptions));
+                    Sourcehawk.CONSOLE_RAW_LOGGER.info(formatExecOptions(execOptions));
                 }
                 handleTextualOutput(scanResult, execOptions, Sourcehawk.MESSAGE_ANSI_LOGGER);
                 break;
@@ -147,17 +147,18 @@ class ScanResultLogger {
     }
 
     /**
-     * Format the scan options for plain text output
+     * Format the exec options for plain text output
      *
-     * @param execOptions the scan options
-     * @return the formatted scan options
+     * @param execOptions the exec options
+     * @return the formatted exec options
      */
-    private String formatexecOptions(final ExecOptions execOptions) {
+    private String formatExecOptions(final ExecOptions execOptions) {
         return System.lineSeparator()
                 + "Repository Root... " + execOptions.getRepositoryRoot() + System.lineSeparator()
                 + "Config File....... " + execOptions.getConfigurationFileLocation() + System.lineSeparator()
                 + "Verbosity......... " + execOptions.getVerbosity() + System.lineSeparator()
-                + "Output Format..... " + execOptions.getOutputFormat() + System.lineSeparator();
+                + "Output Format..... " + execOptions.getOutputFormat() + System.lineSeparator()
+                + "Fail on Warnings.. " + execOptions.isFailOnWarnings() + System.lineSeparator();
     }
 
     /**

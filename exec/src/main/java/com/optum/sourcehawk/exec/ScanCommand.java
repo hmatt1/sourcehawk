@@ -20,6 +20,14 @@ class ScanCommand extends AbstractCommand {
 
     static final String COMMAND_NAME = "scan";
 
+    @CommandLine.Option(
+            names = {"-fow", "--fail-on-warnings"},
+            description = "Whether",
+            defaultValue = "false",
+            showDefaultValue = CommandLine.Help.Visibility.ALWAYS
+    )
+    private boolean failOnWarnings;
+
     /**
      * Bootstrap the command
      *
@@ -43,7 +51,7 @@ class ScanCommand extends AbstractCommand {
     @Override
     public Integer call() {
         ScanResult scanResult;
-        val execOptions = buildExecOptions();
+        val execOptions = buildExecOptions().toBuilder().failOnWarnings(failOnWarnings).build();
         try {
             scanResult = ScanExecutor.scan(execOptions);
         } catch (final Exception e) {

@@ -8,7 +8,6 @@ file-protocols:
       - config
     repository-path: lombok.config
     required: true
-    severity: WARNING
     enforcers:
       - enforcer: .common.StringPropertyEquals
         property-name: config.stopBubbling

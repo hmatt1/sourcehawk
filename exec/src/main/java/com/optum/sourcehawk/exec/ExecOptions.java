@@ -16,7 +16,7 @@ import java.nio.file.Paths;
  * @author Brian Wyka
  */
 @Value
-@Builder
+@Builder(toBuilder = true)
 public class ExecOptions {
 
     /**
@@ -46,5 +46,11 @@ public class ExecOptions {
     @NonNull
     @Builder.Default
     OutputFormat outputFormat = OutputFormat.CONSOLE;
+
+    /**
+     * Whether or not to fail on warnings
+     */
+    @Builder.Default
+    boolean failOnWarnings = false;
 
 }

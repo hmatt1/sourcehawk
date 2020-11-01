@@ -20,6 +20,7 @@ class ExecOptionsSpec extends Specification {
         execOptions.repositoryRoot == Paths.get(".")
         execOptions.configurationFileLocation == "sourcehawk.yml"
         execOptions.verbosity == Verbosity.HIGH
+        !execOptions.failOnWarnings
 
         and:
         execOptions == ExecOptions.builder().build()
@@ -35,6 +36,7 @@ class ExecOptionsSpec extends Specification {
                 .repositoryRoot(Paths.get("/"))
                 .configurationFileLocation("Sourcehawk")
                 .verbosity(Verbosity.ZERO)
+                .failOnWarnings(true)
 
         when:
         ExecOptions execOptions = builder.build()
@@ -44,6 +46,7 @@ class ExecOptionsSpec extends Specification {
         execOptions.repositoryRoot == Paths.get("/")
         execOptions.configurationFileLocation == "Sourcehawk"
         execOptions.verbosity == Verbosity.ZERO
+        execOptions.failOnWarnings
     }
 
     def "builder - NPE"() {

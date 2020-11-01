@@ -28,9 +28,10 @@ class AbstractCommandSpec extends Specification {
         execOptions.outputFormat == OutputFormat.CONSOLE
         execOptions.configurationFileLocation == SourcehawkConstants.DEFAULT_CONFIG_FILE_NAME
         execOptions.verbosity == Verbosity.HIGH
+        !execOptions.failOnWarnings
     }
 
-    def "buildexecOptions - provided options"() {
+    def "buildExecOptions - provided options"() {
         given:
         AbstractCommand command = new ScanCommand(
                 repositoryRootPath: Paths.get("/abc"),
@@ -38,7 +39,8 @@ class AbstractCommandSpec extends Specification {
                         path: Paths.get(".sh.yml")
                 ),
                 outputFormat: OutputFormat.TEXT,
-                verbosity: Verbosity.MEDIUM
+                verbosity: Verbosity.MEDIUM,
+                failOnWarnings: true
         )
 
         when:
@@ -50,10 +52,11 @@ class AbstractCommandSpec extends Specification {
         execOptions.outputFormat == OutputFormat.TEXT
         execOptions.configurationFileLocation == ".sh.yml"
         execOptions.verbosity == Verbosity.MEDIUM
+        !execOptions.failOnWarnings
     }
 
     @Unroll
-    def "buildexecOptions - provided options (#outputFormat) - verbosity downgraded"() {
+    def "buildExecOptions - provided options (#outputFormat) - verbosity downgraded"() {
         given:
         AbstractCommand command = new FixCommand(
                 repositoryRootPath: Paths.get("/abc"),

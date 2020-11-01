@@ -24,13 +24,14 @@ class ScanResultFactory {
     /**
      * Create a scan result based on the file protocol and enforcer result
      *
-     * @param repositoryFilePath the repository file path
+     * @param execOptions the exec options
      * @param fileProtocol the file protocol
      * @param enforcerResult the result of the enforcer
      * @return the derived scan result
      */
-    ScanResult enforcerResult(final String repositoryFilePath, final FileProtocol fileProtocol, final EnforcerResult enforcerResult) {
+    ScanResult enforcerResult(final ExecOptions execOptions, final FileProtocol fileProtocol, final EnforcerResult enforcerResult) {
         val messages = new ArrayList<ScanResult.MessageDescriptor>();
+        val repositoryFilePath = execOptions.getRepositoryRoot().toString();
         val formattedMessages = new ArrayList<String>();
         for (val message: enforcerResult.getMessages()) {
             val messageDescriptor = ScanResult.MessageDescriptor.builder()
@@ -42,8 +43,10 @@ class ScanResultFactory {
             formattedMessages.add(messageDescriptor.toString());
         }
         val severity = Severity.parse(fileProtocol.getSeverity());
-        val scanResultBuilder = ScanResult.builder()
-                .passed(enforcerResult.isPassed());
+        val scanResultBuilder = ScanResult.builder();
+        if (enforcerResult.isPassed() || (Severity.WARNING.name().equals(fileProtocol.getSeverity()) && !execOptions.isFailOnWarnings())) {
+            scanResultBuilder.passed(true);
+        }
         if (!messages.isEmpty()) {
             scanResultBuilder.messages(Collections.singletonMap(repositoryFilePath, messages));
         }

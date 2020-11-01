@@ -63,7 +63,7 @@
                             </includes>
                         </testSource>
                     </testSources>
-                    <targetBytecode>1.8</targetBytecode>
+                    <targetBytecode>${java.version}</targetBytecode>
                 </configuration>
                 <executions>
                     <execution>

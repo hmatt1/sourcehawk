@@ -38,7 +38,9 @@ class ScanCommandSpec extends CliBaseSpecification {
                 [ "-v", "HIGH", repositoryRoot.toString() ] as String[],
                 [ "--verbosity", "HIGH", repositoryRoot.toString() ] as String[],
                 [ "-f", "JSON", repositoryRoot.toString() ] as String[],
-                [ "--output-format", "JSON", repositoryRoot.toString() ] as String[]
+                [ "--output-format", "JSON", repositoryRoot.toString() ] as String[],
+                [ "-fow", repositoryRoot.toString() ] as String[],
+                [ "--fail-on-warnings", repositoryRoot.toString() ] as String[]
         ]
     }
 
