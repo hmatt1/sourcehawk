@@ -12,7 +12,6 @@ import org.apache.maven.model.Model;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * An enforcer which enforces that the coordinates of the maven dependencies are as expected

@@ -48,6 +48,7 @@ public class ScanResult implements Serializable {
      * Value: Collection of {@link MessageDescriptor}
      */
     @Builder.Default
+    @SuppressWarnings("squid:S1948") // Lombok generates private modifier
     Map<String, Collection<MessageDescriptor>> messages = Collections.emptyMap();
 
     /**
@@ -56,6 +57,7 @@ public class ScanResult implements Serializable {
      * Format: [SEVERITY] repositoryFilePath :: message
      */
     @Builder.Default
+    @SuppressWarnings("squid:S1948") // Lombok generates private modifier
     Collection<String> formattedMessages = Collections.emptyList();
 
     /**

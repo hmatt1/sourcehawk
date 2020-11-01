@@ -61,6 +61,7 @@ public class FixResult implements Serializable {
      */
     @NonNull
     @Builder.Default
+    @SuppressWarnings("squid:S1948") // Lombok generates private modifier
     Map<String, Collection<MessageDescriptor>> messages = Collections.emptyMap();
 
     /**
@@ -70,6 +71,7 @@ public class FixResult implements Serializable {
      */
     @NonNull
     @Builder.Default
+    @SuppressWarnings("squid:S1948") // Lombok generates private modifier
     Collection<String> formattedMessages = Collections.emptyList();
 
     /**
