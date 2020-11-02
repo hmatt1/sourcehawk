@@ -57,7 +57,7 @@ public final class ScanExecutor {
                     val message = "Error enforcing file protocol: glob patterns can only be used when there is at least one enforcer";
                     fileProtocolScanResults.add(ScanResultFactory.error(fileProtocol.getRepositoryPath(), message));
                 } else {
-                    fileProtocolScanResults.add(enforceFileExists(repositoryFileReader, fileProtocol));
+                    fileProtocolScanResults.add(enforceFileExists(execOptions, repositoryFileReader, fileProtocol));
                 }
                 continue;
             }
@@ -75,15 +75,16 @@ public final class ScanExecutor {
     /**
      * Handle scenarios where there are no enforcers for a file protocol
      *
+     * @param execOptions the exec options
      * @param repositoryFileReader the repository file reader
      * @param fileProtocol         the file protocol
      * @return the scan result
      */
-    private static ScanResult enforceFileExists(final RepositoryFileReader repositoryFileReader, final FileProtocol fileProtocol) {
+    private static ScanResult enforceFileExists(final ExecOptions execOptions, final RepositoryFileReader repositoryFileReader, final FileProtocol fileProtocol) {
         try {
             return repositoryFileReader.read(fileProtocol.getRepositoryPath())
                     .map(fis -> ScanResult.passed())
-                    .orElseGet(() -> ScanResultFactory.fileNotFound(fileProtocol));
+                    .orElseGet(() -> ScanResultFactory.fileNotFound(execOptions, fileProtocol));
         } catch (final IOException e) {
             val message = String.format("Unable to obtain file input stream: %s", e.getMessage());
             return ScanResultFactory.error(fileProtocol.getRepositoryPath(), message);
@@ -115,7 +116,7 @@ public final class ScanExecutor {
                     .map(absoluteRepositoryFilePath -> FileUtils.deriveRelativePath(execOptions.getRepositoryRoot().toString(), absoluteRepositoryFilePath))
                     .collect(Collectors.toSet());
             if (repositoryPaths.isEmpty()) {
-                fileProtocolScanResults.add(ScanResultFactory.fileNotFound(fileProtocol));
+                fileProtocolScanResults.add(ScanResultFactory.fileNotFound(execOptions, fileProtocol));
             } else {
                 for (val repositoryPath: repositoryPaths) {
                     try (val fileInputStream = repositoryFileReader.read(repositoryPath).orElseThrow(() -> new IOException("File not found"))) {

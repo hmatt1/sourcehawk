@@ -81,17 +81,19 @@ class ScanResultFactory {
     /**
      * Generate a scan result for situations where the file is not found
      *
+     * @param execOptions the exec options
      * @param fileProtocol the file protocol
      * @return the file not found scan result
      */
-    ScanResult fileNotFound(final FileProtocol fileProtocol) {
+    ScanResult fileNotFound(final ExecOptions execOptions, final FileProtocol fileProtocol) {
+        val severity = Severity.parse(fileProtocol.getSeverity());
         val messageDescriptor = ScanResult.MessageDescriptor.builder()
                 .severity(fileProtocol.getSeverity())
                 .repositoryPath(fileProtocol.getRepositoryPath())
                 .message("File not found")
                 .build();
         val scanResultBuilder = ScanResult.builder()
-                .passed(false)
+                .passed(Severity.WARNING.equals(severity) && !execOptions.isFailOnWarnings())
                 .messages(Collections.singletonMap(fileProtocol.getRepositoryPath(), Collections.singleton(messageDescriptor)))
                 .formattedMessages(Collections.singleton(messageDescriptor.toString()));
         return acceptCount(scanResultBuilder, Severity.parse(fileProtocol.getSeverity()), 1)

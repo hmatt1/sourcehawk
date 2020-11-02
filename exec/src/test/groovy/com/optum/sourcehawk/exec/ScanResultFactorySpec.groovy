@@ -200,6 +200,9 @@ class ScanResultFactorySpec extends FileBaseSpecification {
         Map<String, Object> enforcers = [
                 "path/file.ext": StringPropertyEquals.equals("key", "value")
         ]
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(repositoryRoot)
+                .build()
         FileProtocol fileProtocol = FileProtocol.builder()
                 .repositoryPath("path/file.ext")
                 .name("protocol")
@@ -207,7 +210,7 @@ class ScanResultFactorySpec extends FileBaseSpecification {
                 .build()
 
         when:
-        ScanResult scanResult = ScanResultFactory.fileNotFound(fileProtocol)
+        ScanResult scanResult = ScanResultFactory.fileNotFound(execOptions, fileProtocol)
 
         then:
         scanResult
@@ -229,6 +232,47 @@ class ScanResultFactorySpec extends FileBaseSpecification {
         messageDescriptor
         messageDescriptor.repositoryPath == fileProtocol.repositoryPath
         messageDescriptor.severity == Severity.ERROR.name()
+        messageDescriptor.message == "File not found"
+    }
+
+    def "fileNotFound - WARNING"() {
+        given:
+        Map<String, Object> enforcers = [
+                "path/file.ext": StringPropertyEquals.equals("key", "value")
+        ]
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(repositoryRoot)
+                .build()
+        FileProtocol fileProtocol = FileProtocol.builder()
+                .repositoryPath("path/file.ext")
+                .name("protocol")
+                .severity(Severity.WARNING.name())
+                .enforcers([ enforcers ])
+                .build()
+
+        when:
+        ScanResult scanResult = ScanResultFactory.fileNotFound(execOptions, fileProtocol)
+
+        then:
+        scanResult
+        scanResult.passed
+        scanResult.errorCount == 0
+        scanResult.warningCount == 1
+        scanResult.formattedMessages
+        scanResult.formattedMessages.size() == 1
+        scanResult.formattedMessages[0] == "[WARNING] path/file.ext :: File not found"
+        scanResult.messages
+        scanResult.messages.size() == 1
+        scanResult.messages[fileProtocol.repositoryPath]
+        scanResult.messages[fileProtocol.repositoryPath].size() == 1
+
+        when:
+        ScanResult.MessageDescriptor messageDescriptor = scanResult.messages[fileProtocol.repositoryPath][0]
+
+        then:
+        messageDescriptor
+        messageDescriptor.repositoryPath == fileProtocol.repositoryPath
+        messageDescriptor.severity == Severity.WARNING.name()
         messageDescriptor.message == "File not found"
     }
 

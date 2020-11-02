@@ -125,7 +125,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
         !scanResult.passed
     }
 
-    def "scan - file not found (no enforcers)"() {
+    def "scan - file not found - warning (no enforcers)"() {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
@@ -137,17 +137,18 @@ class ScanExecutorSpec extends FileBaseSpecification {
 
         then:
         scanResult
-        !scanResult.passed
+        scanResult.passed
 
         and:
         noExceptionThrown()
     }
 
-    def "scan - file not found (with enforcers)"() {
+    def "scan - file not found  - fail on warnings (with enforcers)"() {
         given:
         ExecOptions execOptions = ExecOptions.builder()
                 .repositoryRoot(repositoryRoot)
                 .configurationFileLocation(testResourcesRoot.resolve("sourcehawk-file-not-found-enforcers.yml").toString())
+                .failOnWarnings(true)
                 .build()
 
         when:
@@ -254,6 +255,9 @@ class ScanExecutorSpec extends FileBaseSpecification {
 
     def "enforceFileExists - repository file reader error"() {
         given:
+        ExecOptions execOptions = ExecOptions.builder()
+                .repositoryRoot(repositoryRoot)
+                .build()
         RepositoryFileReader mockRepositoryFileReader = Mock()
         FileProtocol fileProtocol = FileProtocol.builder()
                 .name("bicycle")
@@ -262,7 +266,7 @@ class ScanExecutorSpec extends FileBaseSpecification {
                 .build()
 
         when:
-        ScanResult scanResult = ScanExecutor.enforceFileExists(mockRepositoryFileReader, fileProtocol)
+        ScanResult scanResult = ScanExecutor.enforceFileExists(execOptions, mockRepositoryFileReader, fileProtocol)
 
         then:
         1 * mockRepositoryFileReader.read(_ as String) >> {
