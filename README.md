@@ -33,6 +33,15 @@ sudo curl https://raw.githubusercontent.com/Optum/sourcehawk/main/install-linux.
 sudo curl https://raw.githubusercontent.com/Optum/sourcehawk/main/install-debian.sh | bash
 ```
 
+##### Mac
+1. Navigate to the latest release
+2. Download the `sourcehawk-darwin-x64_64` release asset
+3. Copy the executable to `/usr/local/bin/sourcehawk`
+
+```sh
+sudo mv sourcehawk-darwin-x64_64 /usr/local/bin/sourcehawk
+```
+
 #### Manuals
 
 * [Sourcehawk](https://optum.github.io/sourcehawk/#_sourcehawk1) - parent command
