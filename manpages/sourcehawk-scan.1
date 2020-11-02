@@ -2,12 +2,12 @@
 .\"     Title: sourcehawk-scan
 .\"    Author: [see the "AUTHOR(S)" section]
 .\" Generator: Asciidoctor 2.0.10
-.\"      Date: 2020-10-28
+.\"      Date: 2020-11-02
 .\"    Manual: Sourcehawk Manual
 .\"    Source: 
 .\"  Language: English
 .\"
-.TH "SOURCEHAWK\-SCAN" "1" "2020-10-28" "" "Sourcehawk Manual"
+.TH "SOURCEHAWK\-SCAN" "1" "2020-11-02" "" "Sourcehawk Manual"
 .ie \n(.g .ds Aq \(aq
 .el       .ds Aq '
 .ss \n[.ss] 0
@@ -31,7 +31,7 @@
 sourcehawk\-scan \- Runs a scan on the source code
 .SH "SYNOPSIS"
 .sp
-\fBsourcehawk scan\fP [\fB\-hV\fP] [\fB\-f\fP=\fI<outputFormat>\fP] [\fB\-v\fP=\fI<verbosity>\fP]
+\fBsourcehawk scan\fP [\fB\-hV\fP] [\fB\-fow\fP] [\fB\-f\fP=\fI<outputFormat>\fP] [\fB\-v\fP=\fI<verbosity>\fP]
 [[\fB\-c\fP=\fIconfig\-file\-path\fP] | \fB\-cfu\fP=\fIconfig\-file\-url\fP] [\fIREPO\-ROOT\fP]
 [COMMAND]
 .SH "DESCRIPTION"
@@ -62,6 +62,17 @@ Output Format, valid values: CONSOLE, TEXT, JSON, MARKDOWN
 .if n .RS 4
 .nf
 Default: CONSOLE
+.fi
+.if n .RE
+.RE
+.sp
+\fB\-fow, \-\-fail\-on\-warnings\fP
+.RS 4
+Whether
+.sp
+.if n .RS 4
+.nf
+Default: false
 .fi
 .if n .RE
 .RE
