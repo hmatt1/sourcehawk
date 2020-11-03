@@ -58,7 +58,7 @@
     <properties>
 
         <!-- DEPENDENCY VERSIONS WITHOUT BOMS -->
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>2.0.0-alpha1</slf4j.version>
 
         <!-- SONAR PROPERTIES -->
         <sonar.exclusions>**/picocli/**/*.*</sonar.exclusions>
