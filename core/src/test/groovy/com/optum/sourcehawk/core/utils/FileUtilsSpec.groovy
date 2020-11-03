@@ -4,15 +4,51 @@ import org.spockframework.util.IoUtil
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
+import sun.nio.fs.UnixFileAttributes
+import sun.nio.fs.UnixPath
 
+import java.nio.file.FileSystems
+import java.nio.file.FileVisitResult
 import java.nio.file.Path
+import java.nio.file.PathMatcher
 import java.nio.file.Paths
+import java.nio.file.attribute.BasicFileAttributes
+import java.util.stream.Stream
 
 class FileUtilsSpec extends Specification {
 
     @Shared
     protected Path testResourcesRoot = Paths.get(IoUtil.getResource("/marker" ).toURI())
             .getParent()
+
+    def "private constructor"() {
+        expect:
+        new FileUtils()
+    }
+
+    def "deriveRelativePath"() {
+        given:
+        String root = "/home/user/code"
+        String absolutePath = "/home/user/code/path/to/dir"
+
+        when:
+        String relativePath = FileUtils.deriveRelativePath(root, absolutePath)
+
+        then:
+        relativePath == "path/to/dir"
+    }
+
+    def "deriveRelativePath - root ends with /"() {
+        given:
+        String root = "/home/user/code/"
+        String absolutePath = "/home/user/code/path/to/dir"
+
+        when:
+        String relativePath = FileUtils.deriveRelativePath(root, absolutePath)
+
+        then:
+        relativePath == "path/to/dir"
+    }
 
     def "find - glob pattern (found - results)"() {
         when:
@@ -83,7 +119,7 @@ class FileUtilsSpec extends Specification {
         expect:
         FileUtils.isGlobPattern("**/*.md")
         FileUtils.isGlobPattern("file?.md")
-        FileUtils.isGlobPattern("*.md")
+        FileUtils.isGlobPattern("[ab].md")
     }
 
     def "isGlobPattern - false"() {
@@ -91,6 +127,44 @@ class FileUtilsSpec extends Specification {
         !FileUtils.isGlobPattern("/dir/Dockerfile")
         !FileUtils.isGlobPattern("file.md")
         !FileUtils.isGlobPattern("dir/file.txt")
+    }
+
+    def "PathMatcherFileVisitor - file"() {
+        given:
+        PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher(String.format("glob:/tmp/**"))
+        Stream.Builder<Paths> streamBuilder = Stream.builder()
+        FileUtils.PathMatcherFileVisitor fileVisitor = new FileUtils.PathMatcherFileVisitor(pathMatcher, streamBuilder)
+        Path file = Paths.get("/tmp/file.txt")
+        BasicFileAttributes mockBasicFileAttributes = Mock()
+
+        when:
+        FileVisitResult fileVisitResult = fileVisitor.visitFile(file, mockBasicFileAttributes)
+
+        then:
+        1 * mockBasicFileAttributes.isDirectory() >> false
+        0 * _
+
+        and:
+        fileVisitResult == FileVisitResult.CONTINUE
+    }
+
+    def "PathMatcherFileVisitor - directory"() {
+        given:
+        PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher(String.format("glob:/tmp/**"))
+        Stream.Builder<Paths> streamBuilder = Stream.builder()
+        FileUtils.PathMatcherFileVisitor fileVisitor = new FileUtils.PathMatcherFileVisitor(pathMatcher, streamBuilder)
+        Path file = Paths.get("/tmp/dir/")
+        BasicFileAttributes mockBasicFileAttributes = Mock()
+
+        when:
+        FileVisitResult fileVisitResult = fileVisitor.visitFile(file, mockBasicFileAttributes)
+
+        then:
+        1 * mockBasicFileAttributes.isDirectory() >> true
+        0 * _
+
+        and:
+        fileVisitResult == FileVisitResult.CONTINUE
     }
 
 }
