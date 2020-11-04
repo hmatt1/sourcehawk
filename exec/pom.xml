@@ -23,6 +23,9 @@
         <executable.name>${project.parent.artifactId}</executable.name>
         <executable.class>com.optum.sourcehawk.exec.Sourcehawk</executable.class>
 
+        <!-- JACOCO OVERRIDES -->
+        <jacoco.coverage.minimum>0.90</jacoco.coverage.minimum> <!-- jacoco-maven-plugin -->
+
         <!-- SONAR PROPERTIES -->
         <sonar.exclusions>**/picocli/**/*.*</sonar.exclusions>
         <sonar.coverage.exclusions>**/picocli/**/*.*</sonar.coverage.exclusions>
