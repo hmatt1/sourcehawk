@@ -12,6 +12,14 @@ class DockerfileFromHasTagSpec extends Specification {
         DockerfileFromHasTag.allowLatest(true)
     }
 
+    def "enforce - null input stream"() {
+        when:
+        DockerfileFromHasTag.allowLatest(false).enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     def "enforce (passed)"() {
         given:
         DockerfileFromHasTag dockerfileFromHasTag = DockerfileFromHasTag.allowLatest(false)

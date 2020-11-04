@@ -6,6 +6,7 @@ import com.optum.sourcehawk.core.scan.Verbosity
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.nio.file.Path
 import java.nio.file.Paths
 
 class AbstractCommandSpec extends Specification {
@@ -48,11 +49,39 @@ class AbstractCommandSpec extends Specification {
 
         then:
         execOptions
-        execOptions.repositoryRoot == Paths.get("/abc")
+        execOptions.repositoryRoot
         execOptions.outputFormat == OutputFormat.TEXT
         execOptions.configurationFileLocation == ".sh.yml"
         execOptions.verbosity == Verbosity.MEDIUM
         !execOptions.failOnWarnings
+    }
+
+    @Unroll
+    def "buildExecOptions - provided options - repository path null/empty"() {
+        given:
+        AbstractCommand command = new ScanCommand(
+                repositoryRootPath: repositoryRootPath,
+                configFile: new AbstractCommand.ConfigFileExclusiveOptions(
+                        path: Paths.get(".sh.yml")
+                ),
+                outputFormat: OutputFormat.TEXT,
+                verbosity: Verbosity.MEDIUM,
+                failOnWarnings: true
+        )
+
+        when:
+        ExecOptions execOptions = command.buildExecOptions()
+
+        then:
+        execOptions
+        execOptions.repositoryRoot == Paths.get(".")
+        execOptions.outputFormat == OutputFormat.TEXT
+        execOptions.configurationFileLocation == ".sh.yml"
+        execOptions.verbosity == Verbosity.MEDIUM
+        !execOptions.failOnWarnings
+
+        where:
+        repositoryRootPath << [ null as Path, Paths.get("") ]
     }
 
     @Unroll
@@ -61,7 +90,7 @@ class AbstractCommandSpec extends Specification {
         AbstractCommand command = new FixCommand(
                 repositoryRootPath: Paths.get("/abc"),
                 configFile: new AbstractCommand.ConfigFileExclusiveOptions(
-                        path: Paths.get(".sh.yml")
+                        url: new URL("https://raw.githubusercontent.com/optum/sourcehawk-parent/sourcehawk.yml")
                 ),
                 outputFormat: outputFormat,
                 verbosity: Verbosity.HIGH
@@ -74,7 +103,7 @@ class AbstractCommandSpec extends Specification {
         execOptions
         execOptions.repositoryRoot == Paths.get("/abc")
         execOptions.outputFormat == outputFormat
-        execOptions.configurationFileLocation == ".sh.yml"
+        execOptions.configurationFileLocation == "https://raw.githubusercontent.com/optum/sourcehawk-parent/sourcehawk.yml"
         execOptions.verbosity == Verbosity.ZERO
 
         where:

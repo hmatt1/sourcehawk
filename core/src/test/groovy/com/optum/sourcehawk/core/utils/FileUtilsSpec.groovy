@@ -146,6 +146,14 @@ class FileUtilsSpec extends Specification {
 
         and:
         fileVisitResult == FileVisitResult.CONTINUE
+
+        when:
+        fileVisitResult = fileVisitor.visitFileFailed(file, new IOException("BOOM"))
+
+        then:
+        fileVisitResult == FileVisitResult.CONTINUE
+
+        and: noExceptionThrown()
     }
 
     def "PathMatcherFileVisitor - directory"() {
@@ -165,6 +173,14 @@ class FileUtilsSpec extends Specification {
 
         and:
         fileVisitResult == FileVisitResult.CONTINUE
+
+        when:
+        fileVisitResult = fileVisitor.visitFileFailed(file, new IOException("BOOM"))
+
+        then:
+        fileVisitResult == FileVisitResult.CONTINUE
+
+        and: noExceptionThrown()
     }
 
 }

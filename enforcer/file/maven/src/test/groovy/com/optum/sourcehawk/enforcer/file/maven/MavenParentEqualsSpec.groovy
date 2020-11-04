@@ -14,6 +14,14 @@ class MavenParentEqualsSpec extends Specification {
         MavenParentEquals.coordinates("groupId:artifactId:1.0.0")
     }
 
+    def "enforce - null input stream"() {
+        when:
+        MavenParentEquals.coordinates("org.example:acme").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #scenario (passed)"() {
         given:

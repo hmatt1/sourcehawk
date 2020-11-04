@@ -13,6 +13,14 @@ class ContentEqualsSpec extends Specification {
         ContentEquals.equals('file')
     }
 
+    def "enforce - null input stream"() {
+        when:
+        ContentEquals.equals("abc").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     def "enforce (passed)"() {
         given:
         ContentEquals contentEquals = ContentEquals.equals(IoUtil.getResourceAsStream('/file.txt').text)

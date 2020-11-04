@@ -13,6 +13,14 @@ class XPathEqualsSpec extends Specification {
         XPathEquals.equals('//bicycles/bicycle[@id="1"]/make/text()', 'Raleigh')
     }
 
+    def "enforce - null input stream"() {
+        when:
+        XPathEquals.equals("//xpath/foo", "bar").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #query = #expectedValue (passed)"() {
         given:
