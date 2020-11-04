@@ -16,6 +16,14 @@ class StringPropertyEqualsSpec extends Specification {
         StringPropertyEquals.equals('key', 'value')
     }
 
+    def "enforce - null input stream"() {
+        when:
+        StringPropertyEquals.equals("foo", "bar").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #propertyName - #expectedPropertyValue (passed)"() {
         given:

@@ -14,6 +14,14 @@ class MavenDependenciesSpec extends Specification {
         MavenDependencies.coordinates(["groupId:artifactId:1.0.0"])
     }
 
+    def "enforce - null input stream"() {
+        when:
+        MavenDependencies.coordinates(["org.example:acme"]).enforceInternal(null as InputStream)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #scenario (passed)"() {
         given:

@@ -28,6 +28,7 @@ public class ContainsLineMatchingAt extends AbstractFileEnforcer {
      * The line number in which the line is expected to be found within the file
      */
     protected final int expectedLineNumber;
+
     /** {@inheritDoc} */
     @Override
     public EnforcerResult enforceInternal(@NonNull final InputStream actualFileInputStream) throws IOException {

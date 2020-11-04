@@ -14,6 +14,14 @@ class YamlPathEqualsSpec extends Specification {
         YamlPathEquals.equals(['$.key': 'value'])
     }
 
+    def "enforce - null input stream"() {
+        when:
+        YamlPathEquals.equals('$.foo', "bar").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #query = #expectedValue (passed)"() {
         given:

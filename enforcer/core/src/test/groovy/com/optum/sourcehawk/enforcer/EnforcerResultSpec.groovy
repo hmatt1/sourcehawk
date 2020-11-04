@@ -44,4 +44,30 @@ class EnforcerResultSpec extends Specification {
         !e3.passed
     }
 
+    def "reduce - both passed"() {
+        given:
+        EnforcerResult e1 = EnforcerResult.passed()
+        EnforcerResult e2 = EnforcerResult.passed()
+
+        when:
+        EnforcerResult e3 = EnforcerResult.reduce(e1, e2)
+
+        then:
+        !e3.messages
+        e3.passed
+    }
+
+    def "reduce - both failed"() {
+        given:
+        EnforcerResult e1 = EnforcerResult.failed("wrong")
+        EnforcerResult e2 = EnforcerResult.failed("incorrect")
+
+        when:
+        EnforcerResult e3 = EnforcerResult.reduce(e1, e2)
+
+        then:
+        e3.messages as List == ["incorrect", "wrong"]
+        !e3.passed
+    }
+
 }

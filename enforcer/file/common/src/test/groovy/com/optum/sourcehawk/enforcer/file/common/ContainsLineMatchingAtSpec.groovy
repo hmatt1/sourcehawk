@@ -15,6 +15,17 @@ class ContainsLineMatchingAtSpec extends Specification {
         ContainsLineMatchingAt.containsMatchAt(Pattern.compile('^I am a line regex+$'), 3)
     }
 
+    def "enforce - null input stream"() {
+        given:
+        ContainsLineMatchingAt containsLineMatchingAt = ContainsLineMatchingAt.containsMatchAt(Pattern.compile("[abc]"), 1)
+
+        when:
+        containsLineMatchingAt.enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #expectedLinePattern - #expectedLineNumber (passed)"() {
         given:

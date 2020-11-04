@@ -13,6 +13,17 @@ class ContainsLineAtSpec extends Specification {
         ContainsLineAt.containsAt('I am a line', 1)
     }
 
+    def "enforce - null input stream"() {
+        given:
+        ContainsLineAt containsLineAt = ContainsLineAt.containsAt("pattern", 1)
+
+        when:
+        containsLineAt.enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #expectedLine - #expectedLineNumber (passed)"() {
         given:

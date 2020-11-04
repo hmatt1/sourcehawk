@@ -13,6 +13,14 @@ class ContainsSpec extends Specification {
         Contains.substring('Hello')
     }
 
+    def "enforce - null input stream"() {
+        when:
+        Contains.substring("abc").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #expectedSubstring (passed)"() {
         given:

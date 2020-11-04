@@ -13,6 +13,14 @@ class MavenPluginsSpec extends Specification {
         MavenPlugins.coordinates(["groupId:artifactId:1.0.0"])
     }
 
+    def "enforce - null input stream"() {
+        when:
+        MavenPlugins.coordinates(["org.example:acme"]).enforceInternal(null as InputStream)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #scenario (passed)"() {
         given:

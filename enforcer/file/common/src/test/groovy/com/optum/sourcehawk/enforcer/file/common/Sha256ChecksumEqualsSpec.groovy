@@ -12,6 +12,14 @@ class Sha256ChecksumEqualsSpec extends Specification {
         Sha256ChecksumEquals.equals("checksum")
     }
 
+    def "enforce - null input stream"() {
+        when:
+        Sha256ChecksumEquals.equals("abc").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     def "enforce (passed))"() {
         given:
         String expectedChecksum = "a6179a1feff6949517fab1d18804a35d25d807c597fcba21a6b4c3e919af6e6f"
