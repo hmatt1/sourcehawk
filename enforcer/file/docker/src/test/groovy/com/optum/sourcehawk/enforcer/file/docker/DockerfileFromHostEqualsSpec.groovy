@@ -13,6 +13,14 @@ class DockerfileFromHostEqualsSpec extends Specification {
         DockerfileFromHostEquals.equals("hub.docker.com")
     }
 
+    def "enforce - null input stream"() {
+        when:
+        DockerfileFromHostEquals.equals("docker.io").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     def "enforce (passed)"() {
         given:
         DockerfileFromHostEquals dockerfileFromHostEquals = DockerfileFromHostEquals.equals('hub.docker.com')

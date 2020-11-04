@@ -15,6 +15,14 @@ class ContainsLineMatchingSpec extends Specification {
         ContainsLineMatching.containsMatch(Pattern.compile('^I am a line expression+$'))
     }
 
+    def "enforce - null input stream"() {
+        when:
+        ContainsLineMatching.containsMatch(Pattern.compile("[abc]")).enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #expectedLinePattern (passed)"() {
         given:

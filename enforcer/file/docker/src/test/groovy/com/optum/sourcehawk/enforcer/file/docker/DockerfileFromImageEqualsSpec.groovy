@@ -13,6 +13,14 @@ class DockerfileFromImageEqualsSpec extends Specification {
         DockerfileFromImageEquals.equals("hub.docker.com")
     }
 
+    def "enforce - null input stream"() {
+        when:
+        DockerfileFromImageEquals.equals("library/alpine").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     def "enforce (passed)"() {
         given:
         DockerfileFromImageEquals DockerfileFromImageEquals = DockerfileFromImageEquals.equals('image:1.0.0')

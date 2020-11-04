@@ -12,6 +12,14 @@ class MavenBannedPropertiesSpec extends Specification {
         MavenBannedProperties.banned(["key": "value"])
     }
 
+    def "enforce - null input stream"() {
+        when:
+        MavenBannedProperties.banned(["key": "value"]).enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     def "enforce - (passed)"() {
         given:
         MavenBannedProperties mavenParentEquals = MavenBannedProperties.banned([

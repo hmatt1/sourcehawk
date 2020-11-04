@@ -44,14 +44,10 @@ class FixResultFactory {
             messages.add(messageDescriptor);
             formattedMessages.add(messageDescriptor.toString());
         }
-        if (!messages.isEmpty()) {
-            fixResultBuilder.messages(Collections.singletonMap(fileProtocol.getRepositoryPath(), messages));
-        }
-        if (!formattedMessages.isEmpty()) {
-            fixResultBuilder.formattedMessages(formattedMessages);
-        }
-        fixResultBuilder.fixCount(formattedMessages.size());
-        return fixResultBuilder.build();
+        return fixResultBuilder.messages(Collections.singletonMap(fileProtocol.getRepositoryPath(), messages))
+                .formattedMessages(formattedMessages)
+                .fixCount(formattedMessages.size())
+                .build();
     }
 
     /**

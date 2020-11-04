@@ -13,6 +13,14 @@ class ContainsLineSpec extends Specification {
         ContainsLine.contains('I am a line')
     }
 
+    def "enforce - null input stream"() {
+        when:
+        ContainsLine.contains("line").enforceInternal(null)
+
+        then:
+        thrown(NullPointerException)
+    }
+
     @Unroll
     def "enforce - #expectedLine (passed)"() {
         given:
