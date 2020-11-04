@@ -116,6 +116,11 @@
     <profiles>
         <profile>
             <id>ci.release</id>
+            <activation>
+                <property>
+                    <name>ci.release</name>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>

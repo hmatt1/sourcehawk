@@ -105,6 +105,41 @@
     </dependencies>
 
     <build>
+
+        <pluginManagement>
+            <plugins>
+
+                <!-- CHECKSTYLE OVERRIDES -->
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <configuration>
+                        <excludes combine.self="append">**/picocli/*.java</excludes>
+                    </configuration>
+                </plugin>
+
+                <!-- JAVADOC OVERRIDES -->
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <excludePackageNames>picocli</excludePackageNames>
+                    </configuration>
+                </plugin>
+
+                <!-- JACOCO OVERRIDES -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <configuration>
+                        <excludes combine.children="append">
+                            <exclude>**/picocli/*.*</exclude>
+                            <exclude>**/picocli/*$*.*</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
         <plugins>
 
             <!-- ADD PICOCLI ANNOTATION PROCESSING TO COMPILER -->
@@ -382,34 +417,6 @@
                     </execution>
 
                 </executions>
-            </plugin>
-
-            <!-- CHECKSTYLE OVERRIDES -->
-            <plugin>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <configuration>
-                    <excludes combine.self="append">**/picocli/*.java</excludes>
-                </configuration>
-            </plugin>
-
-            <!-- JAVADOC OVERRIDES -->
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <excludePackageNames>picocli</excludePackageNames>
-                </configuration>
-            </plugin>
-
-            <!-- JACOCO OVERRIDES -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <configuration>
-                    <excludes combine.children="append">
-                        <exclude>**/picocli/*.*</exclude>
-                        <exclude>**/picocli/*$*.*</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
 
         </plugins>

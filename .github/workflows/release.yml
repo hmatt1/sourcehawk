@@ -44,7 +44,7 @@ jobs:
           echo ::set-output name=RELEASE_VERSION::$RELEASE_VERSION
       - name: Build Maven Project and Deploy Release
         if: success()
-        run: ./mvnw --batch-mode deploy -P ci.deploy,ci.release
+        run: ./mvnw --batch-mode deploy -D ci.deploy -D ci.release
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
