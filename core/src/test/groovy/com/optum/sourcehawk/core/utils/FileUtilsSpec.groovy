@@ -131,9 +131,9 @@ class FileUtilsSpec extends Specification {
 
     def "PathMatcherFileVisitor - file"() {
         given:
-        PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher(String.format("glob:/tmp/**"))
+        PathMatcher mockPathMatcher = Mock()
         Stream.Builder<Paths> streamBuilder = Stream.builder()
-        FileUtils.PathMatcherFileVisitor fileVisitor = new FileUtils.PathMatcherFileVisitor(pathMatcher, streamBuilder)
+        FileUtils.PathMatcherFileVisitor fileVisitor = new FileUtils.PathMatcherFileVisitor(mockPathMatcher, streamBuilder)
         Path file = Paths.get("/tmp/file.txt")
         BasicFileAttributes mockBasicFileAttributes = Mock()
 
@@ -142,6 +142,7 @@ class FileUtilsSpec extends Specification {
 
         then:
         1 * mockBasicFileAttributes.isDirectory() >> false
+        1 * mockPathMatcher.matches(file) >> false
         0 * _
 
         and:
@@ -153,14 +154,15 @@ class FileUtilsSpec extends Specification {
         then:
         fileVisitResult == FileVisitResult.CONTINUE
 
-        and: noExceptionThrown()
+        and:
+        noExceptionThrown()
     }
 
     def "PathMatcherFileVisitor - directory"() {
         given:
-        PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher(String.format("glob:/tmp/**"))
+        PathMatcher mockPathMatcher = Mock()
         Stream.Builder<Paths> streamBuilder = Stream.builder()
-        FileUtils.PathMatcherFileVisitor fileVisitor = new FileUtils.PathMatcherFileVisitor(pathMatcher, streamBuilder)
+        FileUtils.PathMatcherFileVisitor fileVisitor = new FileUtils.PathMatcherFileVisitor(mockPathMatcher, streamBuilder)
         Path file = Paths.get("/tmp/dir/")
         BasicFileAttributes mockBasicFileAttributes = Mock()
 
@@ -180,7 +182,8 @@ class FileUtilsSpec extends Specification {
         then:
         fileVisitResult == FileVisitResult.CONTINUE
 
-        and: noExceptionThrown()
+        and:
+        noExceptionThrown()
     }
 
 }
