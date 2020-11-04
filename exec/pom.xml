@@ -18,9 +18,16 @@
     <packaging>jar</packaging>
 
     <properties>
-        <picocli.version>4.5.1</picocli.version>
+
+        <picocli.version>4.5.2</picocli.version>
         <executable.name>${project.parent.artifactId}</executable.name>
         <executable.class>com.optum.sourcehawk.exec.Sourcehawk</executable.class>
+
+        <!-- SONAR PROPERTIES -->
+        <sonar.exclusions>**/picocli/**/*.*</sonar.exclusions>
+        <sonar.coverage.exclusions>**/picocli/**/*.*</sonar.coverage.exclusions>
+        <sonar.cpd.exclusions>**/picocli/**/*.*</sonar.cpd.exclusions>
+
     </properties>
 
     <dependencies>
