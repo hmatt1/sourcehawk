@@ -27,4 +27,7 @@ sed -i 's/public\sclass\sCommandLine/@SuppressWarnings({"rawtypes", "deprecation
 # Replace the version in pom.xml file
 sed -i "s/<picocli.version>[-[:alnum:]./]\{1,\}<\/picocli.version>/<picocli.version>$VERSION<\/picocli.version>/" "$DIR/pom.xml"
 
+# Remove TODOs s not highlighted in editor
+sed -i 's/TODO/TIDO/g' "$FILE_PATH"
+
 echo "Picocli updated to version: $VERSION"

@@ -146,7 +146,7 @@ import static picocli.CommandLine.Help.Column.Overflow.WRAP;
 public class CommandLine {
 
     /** This is picocli version {@value}. */
-    public static final String VERSION = "4.5.1";
+    public static final String VERSION = "4.5.2";
 
     private final Tracer tracer = new Tracer();
     private final CommandSpec commandSpec;
@@ -366,7 +366,7 @@ public class CommandLine {
      * @since 0.9.7
      */
     public Map<String, CommandLine> getSubcommands() {
-        return new LinkedHashMap<String, CommandLine>(getCommandSpec().subcommands());
+        return new CaseAwareLinkedMap<String, CommandLine>(getCommandSpec().commands);
     }
     /**
      * Returns the command that this is a subcommand of, or {@code null} if this is a top-level command.
@@ -5558,24 +5558,35 @@ public class CommandLine {
 
             private final LinkedHashMap<K, V> targetMap = new LinkedHashMap<K, V>();
             private final HashMap<K, K> keyMap = new HashMap<K, K>();
-            private final Locale locale;
-            private final Set<K> keySet;
+            private final Set<K> keySet = new CaseAwareKeySet();
             private boolean caseInsensitive = false;
+            private final Locale locale;
 
             /**
-             * Constructs an empty LinkedCaseAwareMap instance with {@link java.util.Locale#ENGLISH}.
+             * Constructs an empty {@code CaseAwareLinkedMap} instance with {@link java.util.Locale#ENGLISH}.
              */
             public CaseAwareLinkedMap() {
                 this(ENGLISH);
             }
 
             /**
-             * Constructs an empty LinkedCaseAwareMap instance with the specified {@link java.util.Locale}.
+             * Constructs an empty {@code CaseAwareLinkedMap} instance with the specified {@link java.util.Locale}.
              * @param locale the locale to convert character cases
              */
             public CaseAwareLinkedMap(Locale locale) {
                 this.locale = locale;
-                this.keySet = new CaseAwareKeySet();
+            }
+
+            /**
+             * Constructs a {@code CaseAwareLinkedMap} instance with the same mappings, case-sensitivity and locale as the specified map.
+             * @param map the map whose mappings, case-sensitivity and locale are to be placed in this map
+             * @throws NullPointerException if the specified map is null
+             */
+            public CaseAwareLinkedMap(CaseAwareLinkedMap<? extends K, ? extends V> map) {
+                this.targetMap.putAll(map.targetMap);
+                this.keyMap.putAll(map.keyMap);
+                this.caseInsensitive = map.caseInsensitive;
+                this.locale = map.locale;
             }
 
             static boolean isCaseConvertible(Class<?> clazz) {
@@ -5611,6 +5622,11 @@ public class CommandLine {
                     keyMap.clear();
                 }
                 this.caseInsensitive = caseInsensitive;
+            }
+
+            /** Returns the locale of the map. */
+            public Locale getLocale() {
+                return locale;
             }
 
             /**
@@ -5811,7 +5827,7 @@ public class CommandLine {
                 result.usageMessage.initFrom(usageMessage, this);
                 result.parser(parser);
 
-                //   if this CommandSpec was created/modified via the programmatic API,
+                // TIDO if this CommandSpec was created/modified via the programmatic API,
                 //   we need to copy all attributes that are modifiable via the programmatic API
                 //   and point them to this CommandSpec instance.
 //                result.commands.clear();                result.commands.putAll(this.commands);
@@ -8960,7 +8976,7 @@ public class CommandLine {
                 /** Sets the initial value of this option or positional parameter to the specified value, and returns this builder.
                  * If {@link #hasInitialValue()} is true, the option will be reset to the initial value before parsing (regardless
                  * of whether a default value exists), to clear values that would otherwise remain from parsing previous input. */
-                // test ModelCommandSpecTest.testDontClearScalarOptionOldValueBeforeParseIfInitialValueFalse and Groovy CliBuilder before setting state to CACHED
+                // TIDO test ModelCommandSpecTest.testDontClearScalarOptionOldValueBeforeParseIfInitialValueFalse and Groovy CliBuilder before setting state to CACHED
                 //   testDontClearListOptionOldValueBeforeParseIfInitialValueFalse and testDontClearArrayOptionOldValueBeforeParse
                 public T initialValue(Object initialValue)   { this.initialValue = initialValue; /*initialValueState = InitialValueState.CACHED;*/ return self(); }
 
@@ -10819,7 +10835,7 @@ public class CommandLine {
                     assertNoDuplicateAnnotations(member, Mixin.class, Option.class, Parameters.class, Unmatched.class, Spec.class, ArgGroup.class);
                     if (groupBuilder != null) {
                         throw new InitializationException("@Mixins are not supported on @ArgGroups");
-                        // groupBuilder.addMixin(member.getMixinName(), buildMixinForMember(member, factory));
+                        // TIDO groupBuilder.addMixin(member.getMixinName(), buildMixinForMember(member, factory));
                     } else {
                         CommandSpec mixin = buildMixinForMember(member, factory);
                         commandSpec.addMixin(member.getMixinName(), mixin, member);
@@ -11928,7 +11944,7 @@ public class CommandLine {
             private void validateGroupMultiplicity(CommandLine commandLine) {
                 if (group == null || !group.validate()) { return; }
                 int matchCount = matches().size();
-                // note: matchCount == 0 if only subgroup(s) are matched for a group without args (subgroups-only) // really?
+                // note: matchCount == 0 if only subgroup(s) are matched for a group without args (subgroups-only) // TIDO really?
                 boolean checkMinimum = matchCount > 0 || !group.args().isEmpty();
                 if (checkMinimum && matchCount < group.multiplicity().min) {
                     if (validationResult.success()) {
@@ -11960,7 +11976,7 @@ public class CommandLine {
                 int localPosition = accumulatedPosition - startPosition;
                 if (mayCreateNewMatch) {
                     int positionalParamCount = positionalParam.group().localPositionalParamCount();
-                    localPosition %= positionalParamCount;
+                    if (positionalParamCount != 0) { localPosition %= positionalParamCount; } // #1213 prevent ArithmeticException: / by zero
                 }
                 return positionalParam.index().contains(localPosition) && !lastMatch().hasMatchedValueAtPosition(positionalParam, accumulatedPosition);
             }
@@ -12527,11 +12543,7 @@ public class CommandLine {
 
                 // if we find another command, we are done with the current command
                 if (commandSpec.parser().abbreviatedSubcommandsAllowed()) {
-                    try {
-                        arg = AbbreviationMatcher.match(commandSpec.subcommands().keySet(), arg, commandSpec.subcommandsCaseInsensitive());
-                    } catch (IllegalArgumentException ex) {
-                        throw new ParameterException(CommandLine.this, "Error: " + ex.getMessage());
-                    }
+                    arg = AbbreviationMatcher.match(commandSpec.subcommands().keySet(), arg, commandSpec.subcommandsCaseInsensitive(), CommandLine.this);
                 }
                 if (commandSpec.subcommands().containsKey(arg)) {
                     CommandLine subcommand = commandSpec.subcommands().get(arg);
@@ -12554,21 +12566,17 @@ public class CommandLine {
                 // A single option may be without option parameters, like "-v" or "--verbose" (a boolean value),
                 // or an option may have one or more option parameters.
                 // A parameter may be attached to the option.
+                Set<String> aggregatedOptionNames = new LinkedHashSet<String>();
                 if (commandSpec.parser().abbreviatedOptionsAllowed()) {
-                    Set<String> aggregatedOptionNames = new LinkedHashSet<String>();
                     aggregatedOptionNames.addAll(commandSpec.optionsMap().keySet());
                     aggregatedOptionNames.addAll(commandSpec.negatedOptionsMap().keySet());
-                    Iterator<String> iterator = aggregatedOptionNames.iterator();
-                    try {
-                        arg = AbbreviationMatcher.match(aggregatedOptionNames, arg, commandSpec.optionsCaseInsensitive());
-                    } catch (IllegalArgumentException ex) {
-                        throw new ParameterException(CommandLine.this, "Error: " + ex.getMessage());
-                    }
+                    arg = AbbreviationMatcher.match(aggregatedOptionNames, arg, commandSpec.optionsCaseInsensitive(), CommandLine.this);
                 }
                 LookBehind lookBehind = LookBehind.SEPARATE;
                 int separatorIndex = arg.indexOf(separator);
                 if (separatorIndex > 0) {
                     String key = arg.substring(0, separatorIndex);
+                    key = AbbreviationMatcher.match(aggregatedOptionNames, key, commandSpec.optionsCaseInsensitive(), CommandLine.this); //#1159, #1162
                     // be greedy. Consume the whole arg as an option if possible.
                     if (isStandaloneOption(key) && isStandaloneOption(arg)) {
                         tracer.warn("Both '%s' and '%s' are valid option names in %s. Using '%s'...%n", arg, key, getCommandName(), arg);
@@ -13406,6 +13414,9 @@ public class CommandLine {
             if (commandSpec.optionsMap().containsKey(arg)) { // -v or -f or --file (not attached to param or other option)
                 return true;
             }
+            if (commandSpec.negatedOptionsByNameMap.containsKey(arg)) { // negated option like --no-verbose
+                return true;
+            }
             // [#828] Subcommands should not be parsed as option values for options with optional parameters.
             if (commandSpec.subcommands().containsKey(arg)) {
                 return true;
@@ -13933,7 +13944,13 @@ public class CommandLine {
             if (parent == null) { return; }
             Help.ColorScheme colors = colorScheme != null ? colorScheme : Help.defaultColorScheme(ansi);
             if (commands.length > 0) {
-                CommandLine subcommand = parent.getSubcommands().get(commands[0]);
+                Map<String, CommandLine> parentSubcommands = parent.getCommandSpec().subcommands();
+                String fullName = commands[0];
+                if (parent.isAbbreviatedSubcommandsAllowed()) {
+                    fullName = AbbreviationMatcher.match(parentSubcommands.keySet(), fullName,
+                            parent.isSubcommandsCaseInsensitive(), self);
+                }
+                CommandLine subcommand = parentSubcommands.get(fullName);
                 if (subcommand != null) {
                     if (outWriter != null) {
                         subcommand.usage(outWriter, colors);
@@ -15688,7 +15705,7 @@ public class CommandLine {
              * @deprecated use {@link #forDefaultColumns(CommandLine.Help.Ansi, int, int)} instead
              */
             @Deprecated public static TextTable forDefaultColumns(Ansi ansi, int usageHelpWidth) {
-                // split out the 1 (for long column indent) and 3 (should be description indent)
+                // TIDO split out the 1 (for long column indent) and 3 (should be description indent)
                 return forDefaultColumns(Help.defaultColorScheme(ansi), UsageMessageSpec.DEFAULT_USAGE_LONG_OPTIONS_WIDTH + 4, usageHelpWidth);
             }
 
@@ -16389,6 +16406,7 @@ public class CommandLine {
             static final boolean isWindows()    { return System.getProperty("os.name").toLowerCase().contains("win"); }
             static final boolean isMac()        { return System.getProperty("os.name").toLowerCase().contains("mac"); }
             static final boolean isXterm()      { return System.getenv("TERM") != null && System.getenv("TERM").startsWith("xterm"); }
+            static final boolean isCygwin()     { return System.getenv("TERM") != null && System.getenv("TERM").toLowerCase(ENGLISH).contains("cygwin"); }
             // null on Windows unless on Cygwin or MSYS
             static final boolean hasOsType()    { return System.getenv("OSTYPE") != null; }
 
@@ -16415,7 +16433,7 @@ public class CommandLine {
                 catch (Throwable reflectionFailed) { return true; }
             }
             /** Cygwin and MSYS use pseudo-tty and console is always null... */
-            static boolean isPseudoTTY() { return isWindows() && (isXterm() || hasOsType()); }
+            static boolean isPseudoTTY() { return isWindows() && (isXterm() || isCygwin() || hasOsType()); }
 
             static boolean ansiPossible() {
                 if (forceDisabled())                          { return false; }
@@ -16423,7 +16441,7 @@ public class CommandLine {
                 if (isWindows() && isJansiConsoleInstalled()) { return true; } // #630 JVM crash loading jansi.AnsiConsole on Linux
                 if (hintDisabled())                           { return false; }
                 if (!isTTY() && !isPseudoTTY())               { return false; }
-                return hintEnabled() || !isWindows() || isXterm() || hasOsType();
+                return hintEnabled() || !isWindows() || isXterm() || isCygwin() || hasOsType();
             }
             static boolean isJansiConsoleInstalled() {
                 try {
@@ -17510,8 +17528,9 @@ public class CommandLine {
             return str;
         }
 
-        public static String match(Set<String> set, String abbreviation, boolean caseInsensitive) {
-            if (set.contains(abbreviation)) { // return exact match
+        /** Returns the non-abbreviated name if found, otherwise returns the specified original abbreviation value. */
+        public static String match(Set<String> set, String abbreviation, boolean caseInsensitive, CommandLine source) {
+            if (set.contains(abbreviation) || set.isEmpty()) { // return exact match
                 return abbreviation;
             }
             List<String> abbreviatedKeyChunks = splitIntoChunks(abbreviation, caseInsensitive);
@@ -17524,7 +17543,7 @@ public class CommandLine {
             }
             if (candidates.size() > 1) {
                 String str = candidates.toString();
-                throw new IllegalArgumentException("'" + abbreviation + "' is not unique: it matches '" +
+                throw new ParameterException(source, "Error: '" + abbreviation + "' is not unique: it matches '" +
                         str.substring(1, str.length() - 1).replace(", ", "', '") + "'");
             }
             return candidates.isEmpty() ? abbreviation : candidates.get(0); // return the original if no match found

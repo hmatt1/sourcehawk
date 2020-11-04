@@ -60,11 +60,6 @@
         <!-- DEPENDENCY VERSIONS WITHOUT BOMS -->
         <slf4j.version>1.7.30</slf4j.version>
 
-        <!-- SONAR PROPERTIES -->
-        <sonar.exclusions>**/picocli/**/*.*</sonar.exclusions>
-        <sonar.coverage.exclusions>**/picocli/**/*.*</sonar.coverage.exclusions>
-        <sonar.cpd.exclusions>**/picocli/**/*.*</sonar.cpd.exclusions>
-
     </properties>
 
     <dependencyManagement>

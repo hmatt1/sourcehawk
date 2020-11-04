@@ -17,6 +17,13 @@
     <description>Sourcehawk common utilities and core classes</description>
     <packaging>jar</packaging>
 
+    <properties>
+        <!-- SONAR PROPERTIES -->
+        <sonar.exclusions>**/utils/ModifiableProperties.java</sonar.exclusions>
+        <sonar.coverage.exclusions>**/utils/ModifiableProperties.java</sonar.coverage.exclusions>
+        <sonar.cpd.exclusions>**/utils/ModifiableProperties.java</sonar.cpd.exclusions>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
