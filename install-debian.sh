@@ -15,6 +15,7 @@ if curl -sLk "$DOWNLOAD_URL" -o "$DEB_PACKAGE"; then
   sudo dpkg -i "$DEB_PACKAGE"
   sourcehawk -V
   sourcehawk --help
+  rm -rf "$DEB_PACKAGE"
 else
   echo "Unable to download/install deb package: $DOWNLOAD_URL"
   exit 1

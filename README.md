@@ -28,10 +28,10 @@ curl https://raw.githubusercontent.com/Optum/sourcehawk/main/install-linux.sh | 
 ```
 
 ##### Debian
-You'll need `sudo` for this...
+You'll need to be able to `sudo` for this one.
 
 ```sh
-curl https://raw.githubusercontent.com/Optum/sourcehawk/main/install-debian.sh | sudo bash
+curl https://raw.githubusercontent.com/Optum/sourcehawk/main/install-debian.sh | bash
 ```
 
 ##### Mac
