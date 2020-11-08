@@ -93,16 +93,35 @@
 
                     <!-- VERIFY DOCKER IMAGE -->
                     <execution>
-                        <id>verify-docker-run</id>
+                        <id>verify-docker-run-version</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/verify-docker-image.sh</executable>
+                            <executable>docker</executable>
                             <arguments>
+                                <argument>run</argument>
                                 <argument>${docker.repository}:${docker.tag}</argument>
                                 <argument>--version</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>verify-docker-run-scan</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>docker</executable>
+                            <workingDirectory>${maven.multiModuleProjectDirectory}</workingDirectory>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>-v</argument>
+                                <argument>${maven.multiModuleProjectDirectory}:/home/sourcehawk</argument>
+                                <argument>${docker.repository}:${docker.tag}</argument>
+                                <argument>scan</argument>
                             </arguments>
                         </configuration>
                     </execution>
