@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 class ScanResultLogger {
 
     private final String MESSAGE_PASSED = "Scan passed without any errors";
-    private final String MESSAGE_PASSED_WITH_WARNINGS = "Scan passed. Errors : 0, Warning(s): %d";
+    private final String MESSAGE_PASSED_WITH_WARNINGS = "Scan passed. Errors: 0, Warning(s): %d";
     private final String MESSAGE_FAILED_TEMPLATE = "Scan resulted in failure. Error(s): %d, Warning(s): %d";
 
     /**
