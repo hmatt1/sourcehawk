@@ -29,6 +29,29 @@ class ScanResultSpec extends Specification {
                 .hashCode()
     }
 
+    def "isPassedWithNoWarnings"() {
+        given:
+        ScanResult scanResult = ScanResult.builder()
+                .passed(true)
+                .warningCount(1)
+                .errorCount(0)
+                .messages(Collections.singletonMap("file", Collections.singleton(new ScanResult.MessageDescriptor("WARN", "file", "message"))))
+                .formattedMessages(Collections.singleton("bad"))
+                .build()
+
+        when:
+        boolean passedWithNoWarnings = scanResult.isPassedWithNoWarnings()
+
+        then:
+        !passedWithNoWarnings
+
+        when:
+        passedWithNoWarnings = ScanResult.passed().isPassedWithNoWarnings()
+
+        then:
+        passedWithNoWarnings
+    }
+
     def "passed"() {
         when:
         ScanResult scanResult = ScanResult.passed()
