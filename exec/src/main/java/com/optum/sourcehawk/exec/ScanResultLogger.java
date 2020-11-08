@@ -86,7 +86,7 @@ class ScanResultLogger {
      */
     private void handleTextualOutput(final ScanResult scanResult, final ExecOptions execOptions, final Logger scanMessageLogger) {
         val formattedText = formatText(scanResult);
-        if (scanResult.isPassed()) {
+        if (scanResult.isPassed()) { // TODO: show warnings on passed
             Sourcehawk.CONSOLE_RAW_LOGGER.info(formattedText);
         } else {
             Sourcehawk.CONSOLE_RAW_LOGGER.error(formattedText);
@@ -103,7 +103,7 @@ class ScanResultLogger {
      * @return the formatted text output
      */
     private String formatText(final ScanResult scanResult) {
-        if (scanResult.isPassed()) {
+        if (scanResult.isPassed()) { // TODO: passed with warnings
             return MESSAGE_PASSED;
         }
         return String.format(MESSAGE_FAILED_TEMPLATE, scanResult.getErrorCount(), scanResult.getWarningCount());

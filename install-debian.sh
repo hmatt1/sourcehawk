@@ -10,7 +10,7 @@ DOWNLOAD_URL="https://repo1.maven.org/maven2/${GROUP_ID//.//}/$ARTIFACT_ID/$VERS
 DEB_PACKAGE="/tmp/sourcehawk-$VERSION.deb"
 
 echo "Downloading Sourcehawk package..."
-if sudo curl -sLk "$DOWNLOAD_URL" -o "$DEB_PACKAGE"; then
+if curl -sLk "$DOWNLOAD_URL" -o "$DEB_PACKAGE"; then
   echo "Installing..."
   sudo dpkg -i "$DEB_PACKAGE"
   sourcehawk -V
