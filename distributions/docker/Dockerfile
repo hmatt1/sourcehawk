@@ -1,10 +1,9 @@
-#FROM alpine:3.12
-FROM debian:buster-slim
+# glibc is required for proper DNS resolution within app
+FROM busybox:1.32.0-glibc
 
 # Setup user and group
 ENV GROUP=sourcehawk USER=sourcehawk
-#RUN addgroup ${GROUP} && adduser -h /home/${USER} -G sourcehawk -D ${USER}
-RUN groupadd ${GROUP} && useradd -d /home/${USER} -g ${GROUP} ${USER}
+RUN addgroup ${GROUP} && adduser -h /home/${USER} -G sourcehawk -D ${USER}
 
 # Copy the native image executable into the image
 ARG NATIVE_IMAGE_PATH

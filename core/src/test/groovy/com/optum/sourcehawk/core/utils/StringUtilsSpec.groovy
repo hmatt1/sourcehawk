@@ -81,6 +81,8 @@ class StringUtilsSpec extends Specification {
         " "                                                           | " "
         "abc"                                                         | "abc"
         new GStringImpl(new Object[]{"hello"}, new String[]{"hello"}) | new GStringImpl(new Object[]{"hello"}, new String[]{"hello"})
+        "hellohello"                                                  | new GStringImpl(new Object[]{"hello"}, new String[]{"hello"})
+        new GStringImpl(new Object[]{"hello"}, new String[]{"hello"}) | "hellohello"
     }
 
     @Unroll
@@ -92,6 +94,7 @@ class StringUtilsSpec extends Specification {
         one                                                           | two
         null                                                          | ""
         null                                                          | "null"
+        "null"                                                        | null
         "abc"                                                         | " abc"
         "123"                                                         | "456"
         " "                                                           | "  "
