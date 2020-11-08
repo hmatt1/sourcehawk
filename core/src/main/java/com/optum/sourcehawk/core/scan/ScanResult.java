@@ -61,6 +61,15 @@ public class ScanResult implements Serializable {
     Collection<String> formattedMessages = Collections.emptyList();
 
     /**
+     * Determine if the result is passed, AND has no warnings
+     *
+     * @return true if passed and has no warnings, false otherwise
+     */
+    public boolean isPassedWithNoWarnings() {
+        return passed && warningCount == 0;
+    }
+
+    /**
      * Constructs a "passed" instance of {@link ScanResult}
      *
      * @return the scan result

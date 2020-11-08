@@ -76,6 +76,30 @@ class ScanResultLoggerSpec extends Specification {
 Scan passed without any errors"""
     }
 
+    def "formatMarkdown - passed with warnings (HIGH Verbosity)"() {
+        given:
+        ScanResult scanResult = ScanResult.builder()
+                .passed(true)
+                .warningCount(1)
+                .messages(["file.txt": [ ScanResult.MessageDescriptor.builder().severity(Severity.WARNING.name()).repositoryPath("file.txt").message("msg").build() ]])
+                .formattedMessages(["[WARNING] file.txt :: msg"])
+                .build()
+
+        when:
+        String markdown = ScanResultLogger.formatMarkdown(scanResult, Verbosity.HIGH)
+
+        then:
+        markdown
+        markdown == """## Sourcehawk Scan
+
+Scan passed. Errors: 0, Warning(s): 1
+
+### Results
+
+[WARNING] file.txt :: msg
+"""
+    }
+
     def "formatMarkdown - failed (HIGH Verbosity)"() {
         given:
         ScanResult.MessageDescriptor messageDescriptor = ScanResult.MessageDescriptor.builder()

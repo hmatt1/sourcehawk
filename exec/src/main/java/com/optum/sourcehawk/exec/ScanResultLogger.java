@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 class ScanResultLogger {
 
     private final String MESSAGE_PASSED = "Scan passed without any errors";
+    private final String MESSAGE_PASSED_WITH_WARNINGS = "Scan passed. Errors : 0, Warning(s): %d";
     private final String MESSAGE_FAILED_TEMPLATE = "Scan resulted in failure. Error(s): %d, Warning(s): %d";
 
     /**
@@ -86,13 +87,15 @@ class ScanResultLogger {
      */
     private void handleTextualOutput(final ScanResult scanResult, final ExecOptions execOptions, final Logger scanMessageLogger) {
         val formattedText = formatText(scanResult);
-        if (scanResult.isPassed()) { // TODO: show warnings on passed
+        if (scanResult.isPassedWithNoWarnings()) {
             Sourcehawk.CONSOLE_RAW_LOGGER.info(formattedText);
+        } else if (scanResult.isPassed()) {
+            Sourcehawk.CONSOLE_RAW_LOGGER.warn(formattedText);
         } else {
             Sourcehawk.CONSOLE_RAW_LOGGER.error(formattedText);
-            if (execOptions.getVerbosity() == Verbosity.MEDIUM || execOptions.getVerbosity() == Verbosity.HIGH) {
-                logMessages(scanResult.getMessages(), scanMessageLogger);
-            }
+        }
+        if (execOptions.getVerbosity() == Verbosity.MEDIUM || execOptions.getVerbosity() == Verbosity.HIGH) {
+            logMessages(scanResult.getMessages(), scanMessageLogger);
         }
     }
 
@@ -103,8 +106,10 @@ class ScanResultLogger {
      * @return the formatted text output
      */
     private String formatText(final ScanResult scanResult) {
-        if (scanResult.isPassed()) { // TODO: passed with warnings
+        if (scanResult.isPassedWithNoWarnings()) {
             return MESSAGE_PASSED;
+        } else if (scanResult.isPassed()) {
+            return String.format(MESSAGE_PASSED_WITH_WARNINGS, scanResult.getWarningCount());
         }
         return String.format(MESSAGE_FAILED_TEMPLATE, scanResult.getErrorCount(), scanResult.getWarningCount());
     }
@@ -121,11 +126,15 @@ class ScanResultLogger {
         markdownBuilder.append("## Sourcehawk Scan")
                 .append(System.lineSeparator())
                 .append(System.lineSeparator());
-        if (scanResult.isPassed()) {
+        if (scanResult.isPassedWithNoWarnings()) {
             markdownBuilder.append(MESSAGE_PASSED);
         } else if (verbosity.getLevel() >= Verbosity.MEDIUM.getLevel()) {
-            markdownBuilder.append(String.format(MESSAGE_FAILED_TEMPLATE, scanResult.getErrorCount(), scanResult.getWarningCount()))
-                    .append(System.lineSeparator())
+            if (scanResult.isPassed()) {
+                markdownBuilder.append(String.format(MESSAGE_PASSED_WITH_WARNINGS, scanResult.getWarningCount()));
+            } else {
+                markdownBuilder.append(String.format(MESSAGE_FAILED_TEMPLATE, scanResult.getErrorCount(), scanResult.getWarningCount()));
+            }
+            markdownBuilder.append(System.lineSeparator())
                     .append(System.lineSeparator());
             markdownBuilder.append("### Results")
                     .append(System.lineSeparator())
