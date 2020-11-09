@@ -1,5 +1,6 @@
 # Oracle GraalVM Java 8 Base Container
-FROM oracle/graalvm-ce:20.1.0-java8
+ARG FROM_TAG=20.1.0-java8
+FROM oracle/graalvm-ce:${FROM_TAG}
 
 # Build Arguments
 ARG NAME
