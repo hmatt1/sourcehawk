@@ -25,30 +25,29 @@ class ScanResultFactory {
      * Create a scan result based on the file protocol and enforcer result
      *
      * @param execOptions the exec options
-     * @param fileProtocol the file protocol
+     * @param repositoryPath the path to the file in the repository
+     * @param severity the severity of the file protocol
      * @param enforcerResult the result of the enforcer
      * @return the derived scan result
      */
-    ScanResult enforcerResult(final ExecOptions execOptions, final FileProtocol fileProtocol, final EnforcerResult enforcerResult) {
+    ScanResult enforcerResult(final ExecOptions execOptions, final String repositoryPath, Severity severity, final EnforcerResult enforcerResult) {
         val messages = new ArrayList<ScanResult.MessageDescriptor>();
-        val repositoryFilePath = execOptions.getRepositoryRoot().toString();
         val formattedMessages = new ArrayList<String>();
         for (val message: enforcerResult.getMessages()) {
             val messageDescriptor = ScanResult.MessageDescriptor.builder()
-                    .severity(fileProtocol.getSeverity())
-                    .repositoryPath(repositoryFilePath)
+                    .severity(severity.name())
+                    .repositoryPath(repositoryPath)
                     .message(message)
                     .build();
             messages.add(messageDescriptor);
             formattedMessages.add(messageDescriptor.toString());
         }
-        val severity = Severity.parse(fileProtocol.getSeverity());
         val scanResultBuilder = ScanResult.builder();
-        if (enforcerResult.isPassed() || (Severity.WARNING.name().equals(fileProtocol.getSeverity()) && !execOptions.isFailOnWarnings())) {
+        if (enforcerResult.isPassed() || (Severity.WARNING == severity && !execOptions.isFailOnWarnings())) {
             scanResultBuilder.passed(true);
         }
         if (!messages.isEmpty()) {
-            scanResultBuilder.messages(Collections.singletonMap(repositoryFilePath, messages));
+            scanResultBuilder.messages(Collections.singletonMap(repositoryPath, messages));
         }
         if (!formattedMessages.isEmpty()) {
             scanResultBuilder.formattedMessages(formattedMessages);
