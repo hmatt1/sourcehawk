@@ -31,6 +31,9 @@
         <sonar.coverage.exclusions>**/picocli/**/*.*</sonar.coverage.exclusions>
         <sonar.cpd.exclusions>**/picocli/**/*.*</sonar.cpd.exclusions>
 
+        <!-- FIXME: temp for java11 / windows graal testing -->
+        <jacoco.skip>true</jacoco.skip>
+
     </properties>
 
     <dependencies>
@@ -46,12 +49,6 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.fusesource.jansi</groupId>
-            <artifactId>jansi</artifactId>
-            <version>1.17.1</version>
             <scope>runtime</scope>
         </dependency>
 
