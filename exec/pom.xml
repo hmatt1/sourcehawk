@@ -46,7 +46,13 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <scope>compile</scope>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>1.17.1</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- SOURCEHAWK COMPILE DEPENDENCIES -->

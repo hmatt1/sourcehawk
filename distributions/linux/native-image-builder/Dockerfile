@@ -1,5 +1,6 @@
-# GraalVM Java 11 Base Container for Building
-FROM oracle/graalvm-ce:20.2.0-java11
+# GraalVM Java Base Container for Building
+ARG FROM_TAG
+FROM oracle/graalvm-ce:${FROM_TAG}
 
 # Build Arguments
 ARG NAME
@@ -20,7 +21,5 @@ RUN native-image -cp native-image.jar \
     -H:+ReportExceptionStackTraces \
     -H:+TraceClassInitialization \
     --report-unsupported-elements-at-runtime \
-    --initialize-at-build-time=com.sun.org.apache.xerces.internal.util,com.sun.org.apache.xerces.internal.impl,jdk.xml.internal,com.sun.xml.internal.stream.util,com.sun.org.apache.xerces.internal.xni,com.sun.org.apache.xerces.internal.utils \
-    --initialize-at-build-time=org.slf4j,org.yaml.snakeyaml,javax \
     --no-fallback \
     --static

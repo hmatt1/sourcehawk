@@ -60,7 +60,6 @@
     </build>
 
     <modules>
-        <module>native-image-parent</module>
         <module>linux</module>
         <module>docker</module>
         <module>debian</module>

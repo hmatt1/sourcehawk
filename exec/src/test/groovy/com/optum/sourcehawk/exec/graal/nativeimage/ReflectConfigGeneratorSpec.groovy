@@ -5,6 +5,7 @@ import com.optum.sourcehawk.core.scan.ScanResult
 import com.optum.sourcehawk.enforcer.file.FileEnforcer
 import com.optum.sourcehawk.exec.FileBaseSpecification
 import com.optum.sourcehawk.protocol.FileProtocol
+import org.fusesource.jansi.AnsiConsole
 import org.reflections.Reflections
 
 import java.nio.charset.StandardCharsets
