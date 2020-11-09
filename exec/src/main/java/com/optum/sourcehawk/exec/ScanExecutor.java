@@ -4,6 +4,7 @@ import com.optum.sourcehawk.configuration.SourcehawkConfiguration;
 import com.optum.sourcehawk.core.repository.LocalRepositoryFileReader;
 import com.optum.sourcehawk.core.repository.RepositoryFileReader;
 import com.optum.sourcehawk.core.scan.ScanResult;
+import com.optum.sourcehawk.core.scan.Severity;
 import com.optum.sourcehawk.core.utils.FileUtils;
 import com.optum.sourcehawk.enforcer.file.FileEnforcer;
 import com.optum.sourcehawk.protocol.FileProtocol;
@@ -118,10 +119,11 @@ public final class ScanExecutor {
             if (repositoryPaths.isEmpty()) {
                 fileProtocolScanResults.add(ScanResultFactory.fileNotFound(execOptions, fileProtocol));
             } else {
+                val severity = Severity.parse(fileProtocol.getSeverity());
                 for (val repositoryPath: repositoryPaths) {
                     try (val fileInputStream = repositoryFileReader.read(repositoryPath).orElseThrow(() -> new IOException("File not found"))) {
                         val enforcerResult = fileEnforcer.enforce(fileInputStream);
-                        fileProtocolScanResults.add(ScanResultFactory.enforcerResult(execOptions, fileProtocol, enforcerResult));
+                        fileProtocolScanResults.add(ScanResultFactory.enforcerResult(execOptions, repositoryPath, severity, enforcerResult));
                     }
                 }
             }
