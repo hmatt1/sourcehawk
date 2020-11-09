@@ -154,12 +154,15 @@ jobs:
           graalvm-ce-java11-20.2.0\bin\native-image -cp .\build\native-image.jar -H:+ReportExceptionStackTraces --report-unsupported-elements-at-runtime
         env:
           JAVA_HOME: ./graalvm-ce-java11-20.2.0
-      - name: Rename Native Image EXE
-        working-directory: build
-        run: ren sourcehawk sourcehawk.exe
       - name: Archive Windows Native Image
         if: success()
         uses: actions/upload-artifact@v2
         with:
           name: windows-native-image
-          path: build/sourcehawk.exe
+          path: sourcehawk.exe
+      - name: Archive Windows Native Image
+          if: success()
+          uses: actions/upload-artifact@v2
+          with:
+            name: windows-native-image-2
+            path: sourcehawk
