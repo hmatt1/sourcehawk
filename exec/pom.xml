@@ -33,6 +33,7 @@
 
         <!-- FIXME: temp for java11 / windows graal testing -->
         <jacoco.skip>true</jacoco.skip>
+        <enforcer.skip>true</enforcer.skip>
 
     </properties>
 
@@ -49,6 +50,12 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>1.17.1</version>
             <scope>runtime</scope>
         </dependency>
 
