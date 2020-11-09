@@ -18,7 +18,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <docker.fromtag/> <!-- Defined in jdk specific profile -->
+        <dockerfile.native/> <!-- Defined in jdk specific profile -->
         <docker.image>${project.artifactId}-native-image-builder</docker.image>
         <docker.workdir>/home/${executable.name}</docker.workdir>
         <docker.build.executable>${docker.workdir}/${executable.name}</docker.build.executable>
@@ -77,11 +77,10 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <dockerfile>${basedir}/native-image-builder/Dockerfile</dockerfile>
+                            <dockerfile>${dockerfile.native}</dockerfile>
                             <repository>${docker.image}</repository>
                             <tag>${project.version}</tag>
                             <buildArgs>
-                                <FROM_TAG>${docker.fromtag}</FROM_TAG>
                                 <NAME>${executable.name}</NAME>
                                 <JAR>target/native-image-dependencies/sourcehawk-exec-${project.version}-native-image.jar</JAR>
                                 <WORKDIR>${docker.workdir}</WORKDIR>
@@ -169,7 +168,7 @@
                 <jdk>8</jdk>
             </activation>
             <properties>
-                <docker.fromtag>20.1.0-java8</docker.fromtag>
+                <dockerfile.native>${basedir}/native-image-builder/Dockerfile</dockerfile.native>
             </properties>
         </profile>
 
@@ -180,7 +179,7 @@
                 <jdk>11</jdk>
             </activation>
             <properties>
-                <docker.fromtag>20.2.0-java11</docker.fromtag>
+                <dockerfile.native>${basedir}/native-image-builder/Dockerfile.java11</dockerfile.native>
             </properties>
         </profile>
 

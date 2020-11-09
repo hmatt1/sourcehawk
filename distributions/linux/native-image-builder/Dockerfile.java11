@@ -1,5 +1,5 @@
-# Oracle GraalVM Java 8 Base Container
-FROM oracle/graalvm-ce:20.1.0-java8
+# Oracle GraalVM Java 11 Base Container
+FROM oracle/graalvm-ce:20.2.0-java11
 
 # Build Arguments
 ARG NAME
