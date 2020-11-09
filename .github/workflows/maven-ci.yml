@@ -160,9 +160,9 @@ jobs:
         with:
           name: windows-native-image
           path: sourcehawk.exe
-      - name: Archive Windows Native Image
-          if: success()
-          uses: actions/upload-artifact@v2
-          with:
-            name: windows-native-image-2
-            path: sourcehawk
+      - name: Archive Windows Native Image 2
+        if: success()
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-native-image-2
+          path: sourcehawk
